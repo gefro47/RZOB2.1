@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">RZOB2.1</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setting_name_header">Настройки</string>
+    <string name="settings_profile">Профиль</string>
+    <!--    <string name="settings_dolzhnost_name">Регулировщик</string>-->
+    <string name="settings_label_dolzhnost">Нажмите чтобы изменить должность</string>
+    <string name="settings_cash">Зарплата</string>
+    <string name="settings_label_cash">Нажмите чтобы указать зарплату</string>
+    <string name="settings_history">История дохода</string>
+    <string name="settings_label_history">Нажмите для работы с историей дохода</string>
+    <string name="settings_position_name">Должность</string>
+    <string name="register_phone_hint">+79123456789</string>
+
+    <string name="settings_default_username">Dima Padusev</string>
+    <string name="settings_default_status">В сети</string>
+    <string name="settings_text_account">Аккаунт</string>
+    <string name="settings_default_number">+79992197641</string>
+    <string name="settings_label_phone_number">Нажмите чтобы изменить номер телефона</string>
+    <string name="settings_default_login">kek_lol</string>
+    <string name="settings_label_login">Имя пользователя</string>
+    <string name="settings_default_bio">О себе</string>
+    <string name="settings_label_bio">Напишите немного о себе</string>
+    <string name="settings_menu_change_name">Изменить имя</string>
+    <string name="settings_menu_exit">Выход</string>
+    <string name="cd_register_image">register_image</string>
+    <string name="register_text_enter_code">Введите код</string>
+    <string name="register_text_we_send">Мы отправили SMS с кодом проверки на ваш телефон</string>
+    <string name="register_hint_default_code">- - - - - -</string>
+    <string name="register_title_your_phone">Ваш телефон</string>
+    <string name="register_toast_enter_phone">Введите номер телефона</string>
+    <string name="settings_hint_input_name">Имя</string>
+    <string name="settings_hint_input_surname">Фамилия</string>
+    <string name="settings_toast_name_is_empty">Имя не может быть пустым</string>
+    <string name="settings_toast_position_is_empty">Должность не может быть пустой</string>
+    <string name="toast_data_update">Данные обновлены</string>
+    <string name="settings_hint_input_username">username</string>
+    <string name="settings_hint_input_bio">bio</string>
+    <string name="settings_hint_input_position">Должность</string>
+    <string name="settings_change_salary_hint">Укажите текущую зарплату</string>
+</resources>

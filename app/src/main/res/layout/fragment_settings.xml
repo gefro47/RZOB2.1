@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.fragments.SettingsFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_header_block"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/osnovnoy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/settings_icon_width"
+            android:layout_height="@dimen/settings_icon_height"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            android:src="@drawable/icon_workman"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/setting_name_header"
+            app:layout_constraintStart_toEndOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:textSize="@dimen/very_large_text_size"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/horizontal_margin"
+            />
+
+        <ImageView
+            android:id="@+id/imageViewExit"
+            android:layout_width="@dimen/settings_exit_icon_width"
+            android:layout_height="@dimen/settings_exit_icon_height"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:src="@drawable/icon_exit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/settings_text_account"
+        android:text="@string/settings_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        android:layout_marginTop="@dimen/vertical_large_margin"
+        android:textSize="@dimen/smallText"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/settings_header_block"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_btn_change_position"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_text_account"
+        style="@style/settingsButtons">
+
+        <TextView
+            android:id="@+id/settings_position"
+            tools:text="@string/settings_position_name"
+            style="@style/normalText"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/settings_label_dolzhnost"
+            android:text="@string/settings_label_dolzhnost"
+            app:layout_constraintTop_toBottomOf="@id/settings_position"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/smallText" />
+        <View
+            app:layout_constraintTop_toBottomOf="@id/settings_label_dolzhnost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/separator" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_btn_change_salary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_btn_change_position"
+        style="@style/settingsButtons">
+
+        <TextView
+            android:id="@+id/settings_cash"
+            android:text="@string/settings_cash"
+            style="@style/normalText"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/settings_label_cash"
+            android:text="@string/settings_label_cash"
+            app:layout_constraintTop_toBottomOf="@id/settings_cash"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/smallText" />
+        <View
+            app:layout_constraintTop_toBottomOf="@id/settings_label_cash"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/separator" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_btn_change_history"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_btn_change_salary"
+        style="@style/settingsButtons">
+
+        <TextView
+            android:id="@+id/settings_history"
+            android:text="@string/settings_history"
+            style="@style/normalText"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/settings_label_history"
+            android:text="@string/settings_label_history"
+            app:layout_constraintTop_toBottomOf="@id/settings_history"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/smallText" />
+        <View
+            app:layout_constraintTop_toBottomOf="@id/settings_label_history"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/separator" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
