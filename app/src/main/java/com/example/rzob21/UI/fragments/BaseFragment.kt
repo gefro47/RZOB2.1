@@ -10,7 +10,7 @@ import com.example.rzob21.R
 import com.example.rzob21.utilits.APP_ACTIVITY
 import com.example.rzob21.utilits.hideKeyboard
 
-open class BaseFragment(val layout: Int) : Fragment(layout) {
+open class BaseFragment(layout: Int) : Fragment(layout) {
 
     override fun onStart() {
         super.onStart()

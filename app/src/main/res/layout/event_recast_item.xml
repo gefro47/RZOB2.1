@@ -7,10 +7,10 @@
     android:layout_margin="@dimen/horizontal_margin">
 
     <ImageView
-        android:id="@+id/add"
+        android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_menu_pererab_day"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,20 +18,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/add">
+        app:layout_constraintStart_toEndOf="@id/image">
         <TextView
             android:id="@+id/event_name"
             style="@style/normalText"
-            tools:text="Dima Padusev"
+            android:text="21 февраля: Переработка"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
         <TextView
-            android:id="@+id/contact_status"
+            android:id="@+id/event_info"
             style="@style/smallText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_name"
-            tools:text="в сети"
+            tools:text="3,5 часа"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

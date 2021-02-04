@@ -13,16 +13,15 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
     override fun onResume() {
         super.onResume()
-        imageViewExit.setOnClickListener {
-            AUTH.signOut()
-            (activity as MainActivity).replaceActivity(RegisterActivity())
-        }
-
         setHasOptionsMenu(true)
         initFields()
     }
 
     private fun initFields() {
+        imageViewExit.setOnClickListener {
+            AUTH.signOut()
+            (activity as MainActivity).replaceActivity(RegisterActivity())
+        }
         settings_position.text = USER.position
         settings_btn_change_position.setOnClickListener { replaceFragment(ChangePositionFragment())}
         settings_btn_change_salary.setOnClickListener { replaceFragment(ChangeSalaryFragment()) }

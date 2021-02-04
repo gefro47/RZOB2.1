@@ -39,4 +39,10 @@
     <string name="settings_hint_input_bio">bio</string>
     <string name="settings_hint_input_position">Должность</string>
     <string name="settings_change_salary_hint">Укажите текущую зарплату</string>
+    <string name="recast_string">Переработка</string>
+    <string name="holiday_string">Отпуск</string>
+    <string name="sick_days_string">Больничный</string>
+    <string name="business_trip_string">Командировка</string>
+    <string name="recast_input_string">Укажите кол-во часов</string>
+    <string name="recast_toast_hours_is_empty">Поле \"часы\" не может быть \nпустым или равным нулю</string>
 </resources>

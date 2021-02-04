@@ -7,9 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.rzob21.R
-import kotlinx.android.synthetic.main.fragment_calendar.*
-import java.text.DateFormat
-import java.util.*
 
 fun Fragment.showToast (message:String){
     Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()

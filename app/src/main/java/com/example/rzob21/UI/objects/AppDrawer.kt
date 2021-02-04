@@ -17,12 +17,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 
 class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androidx.appcompat.widget.Toolbar){
     private lateinit var mDrawer: Drawer
-    private lateinit var mHeader: AccountHeader
+//    private lateinit var mHeader: AccountHeader
     private lateinit var mDrawerLayout: DrawerLayout
-    private lateinit var mCurrentProfile: ProfileDrawerItem
+//    private lateinit var mCurrentProfile: ProfileDrawerItem
 
     fun create() {
-        createHeader()
+//        createHeader()
         createDrawer()
         mDrawerLayout = mDrawer.drawerLayout
     }
@@ -94,16 +94,16 @@ class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androi
             }).build()
     }
 
-    private fun createHeader() {
-        mHeader = AccountHeaderBuilder()
-            .withActivity(mainActivity)
-            .withHeaderBackground(R.drawable.header)
-//            .addProfiles(
-//                ProfileDrawerItem()
-//                    .withName("Dima")
-//                    .withEmail("@gmail.com")
-//            )
-            .build()
-    }
+//    private fun createHeader() {
+//        mHeader = AccountHeaderBuilder()
+//            .withActivity(mainActivity)
+//            .withHeaderBackground(R.drawable.header)
+////            .addProfiles(
+////                ProfileDrawerItem()
+////                    .withName("Dima")
+////                    .withEmail("@gmail.com")
+////            )
+//            .build()
+//    }
 
 }
