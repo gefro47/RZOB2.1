@@ -45,4 +45,5 @@
     <string name="business_trip_string">Командировка</string>
     <string name="recast_input_string">Укажите кол-во часов</string>
     <string name="recast_toast_hours_is_empty">Поле \"часы\" не может быть \nпустым или равным нулю</string>
+    <string name="holiday_input_string">Укажите кол-во дней</string>
 </resources>

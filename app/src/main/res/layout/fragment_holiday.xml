@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UI.fragments.RecastFragment">
+    tools:context=".UI.fragments.HolidayFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recast_header_block"
+        android:id="@+id/holiday_header_block"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/osnovnoy"
@@ -16,11 +16,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewRec"
+            android:id="@+id/imageViewHol"
             android:layout_width="@dimen/settings_icon_width"
             android:layout_height="@dimen/settings_icon_height"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:src="@drawable/ic_menu_pererab_day"
+            android:src="@drawable/ic_menu_otpusc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,10 +28,10 @@
 
 
         <TextView
-            android:id="@+id/recast_data"
+            android:id="@+id/holiday_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/imageViewRec"
+            app:layout_constraintStart_toEndOf="@id/imageViewHol"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/very_large_text_size"
             android:textColor="@color/colorBlack"
@@ -39,35 +39,30 @@
             android:layout_marginTop="@dimen/vertical_margin"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/recast_label"
+            android:id="@+id/holiday_label_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/normalText"
             android:textColor="@color/colorBlack"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:text="Переработка"
-            app:layout_constraintStart_toEndOf="@id/imageViewRec"
-            app:layout_constraintTop_toBottomOf="@id/recast_data"
+            android:text="Отпуск"
+            app:layout_constraintStart_toEndOf="@id/imageViewHol"
+            app:layout_constraintTop_toBottomOf="@id/holiday_data"
             android:textStyle="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/recast_input_hours"
-        android:hint="@string/recast_input_string"
+        android:id="@+id/holiday_input_days"
+        android:hint="@string/holiday_input_string"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recast_header_block"
+        app:layout_constraintTop_toBottomOf="@id/holiday_header_block"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/editTextNumeric"/>
+        style="@style/editTextNumeric"
 
-    <ImageView
-        android:id="@+id/recast_delete_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="@dimen/horizontal_margin"
-        android:layout_marginBottom="@dimen/vertical_margin"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

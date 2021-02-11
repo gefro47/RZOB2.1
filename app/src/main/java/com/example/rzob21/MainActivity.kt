@@ -28,11 +28,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     private fun initFunc() {
         if (AUTH.currentUser != null){
             setSupportActionBar(mToolbar)
