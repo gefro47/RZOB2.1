@@ -18,52 +18,18 @@ import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
-//
-//    private lateinit var mRecycleView: RecyclerView
-//    private lateinit var mRefRecast: DatabaseReference
-//    private lateinit var mAdapter: FirebaseRecyclerAdapter<Recast, RecastHolder>
-
-    class RecastHolder(view: View):RecyclerView.ViewHolder(view){
-        val date:TextView = view.event_name
-        val info:TextView = view.event_info
-        init {
-            itemView.setOnClickListener {
-                val position: Int = adapterPosition
-                showToast("${position + 1}")
-            }
-        }
-    }
-
-    class HolidayHolder(view: View):RecyclerView.ViewHolder(view){
-        val date:TextView = view.event_name
-        val info:TextView = view.event_info
-
-        init {
-            itemView.setOnClickListener {
-                val position: Int = adapterPosition
-                showToast("${position + 1}")
-            }
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         if(APP_CALENDAR_DATE == "") data.text = calendarikToday() else data.text = APP_CALENDAR_DATE
         calendarik()
         hideKeyboard()
-        holidayPlusDate()
     }
 
     override fun onResume() {
         super.onResume()
-        initRecycleView()
         initFields()
     }
 
-
-    private fun initRecycleView() {
-        initEvent(calendar_recycle_view)
-    }
 
     private fun initFields() {
         container_for_add.setOnClickListener {
@@ -99,8 +65,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         val p_date_m = APP_CALENDAR_DATE_MONTH
         val p_date_y = APP_CALENDAR_DATE_YEAR
         if (p_date_m != APP_CALENDAR_DATE_MONTH_CHECK || p_date_y != APP_CALENDAR_DATE_YEAR_CHECK){
-            LIST_OF_RECAST_DATE = mutableListOf<Int>()
-            initRecycleView()
             APP_CALENDAR_DATE_MONTH_CHECK = p_date_m
             APP_CALENDAR_DATE_YEAR_CHECK = p_date_y
         }
@@ -122,7 +86,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             data.text = APP_CALENDAR_DATE
             APP_DATE_DAY_OF_WEEK = calendar1.get(Calendar.DAY_OF_WEEK)
             initDay()
-            holidayPlusDate()
         }
     }
 }

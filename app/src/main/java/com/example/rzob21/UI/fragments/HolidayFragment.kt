@@ -27,7 +27,6 @@ class HolidayFragment : BaseChangeCalendarFragment(R.layout.fragment_holiday) {
             }
             false
         })
-        LIST_OF_HOLIDAY_DATE = mutableListOf<Int>()
     }
     override fun change() {
         val hours = holiday_input_days.text.toString()
@@ -37,10 +36,9 @@ class HolidayFragment : BaseChangeCalendarFragment(R.layout.fragment_holiday) {
             APP_HOLIDAYS_DAY = holiday_input_days.text.toString().toInt()
             holidayPlusDate()
             val holiday = Holiday(APP_CALENDAR_DATE, APP_CALENDAR_DATE_PLUS_HOLIDAY, APP_CALENDAR_DATE_DAY, APP_DATE_DAY_OF_WEEK)
-            saveData(NODE_HOLIDAY, holiday){
+
                 showToast(getString(R.string.toast_data_update))
                 fragmentManager?.popBackStack()
-            }
         }
     }
 }

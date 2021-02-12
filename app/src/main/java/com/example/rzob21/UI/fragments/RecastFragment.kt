@@ -31,11 +31,9 @@ class RecastFragment(val Day: Int,var boolean: Boolean = false) : BaseChangeCale
             false
             })
         recast_delete_image.setOnClickListener{
-            deleteData(NODE_RECAST, Day)
             showToast(getString(R.string.toast_data_update))
             fragmentManager?.popBackStack()
         }
-        LIST_OF_RECAST_DATE = mutableListOf<Int>()
     }
 
     override fun change() {
@@ -44,20 +42,13 @@ class RecastFragment(val Day: Int,var boolean: Boolean = false) : BaseChangeCale
             showToast(getString(R.string.recast_toast_hours_is_empty))
         }else {
             val recast = Recast(hours.toDouble(), APP_CALENDAR_DATE_DAY, APP_DATE_DAY_OF_WEEK)
-            saveData(NODE_RECAST, recast){
+
                 showToast(getString(R.string.toast_data_update))
                 fragmentManager?.popBackStack()
-            }
+
         }
     }
     fun initRecast(){
-        readData(NODE_RECAST, Day){
-            RECAST = it.getValue(Recast::class.java) ?: Recast()
-            if (RECAST.recast_hours != 0.0){
-                recast_input_hours.setText(RECAST.recast_hours.toString())
-            }
-            recast_input_hours.requestFocus()
-            recast_input_hours.setSelection(recast_input_hours.getText().length)
-        }
+
     }
 }

@@ -71,41 +71,8 @@ inline fun readData(Node: String ,Day: Int, crossinline  function: (it: DataSnap
         })
 }
 
-fun readDataRecastForRecycleView(holder: CalendarFragment.RecastHolder,
-                                 model: Recast){
-    val mRefRecast: DatabaseReference = REF_DATABASE_ROOT.child(NODE_RECAST).child(UID).child(APP_CALENDAR_DATE_YEAR.toString())
-        .child(APP_CALENDAR_DATE_MONTH.toString()).child(model.day_of_month.toString())
-    mRefRecast.addValueEventListener(AppValueEventListener {
-        val recast = it.getRecast()
-//        if (recast.day_of_month!=0) LIST_OF_RECAST.add(Recast(recast.recast_hours,recast.day_of_month, recast.day_of_week))
-        if (recast.day_of_month!=0) LIST_OF_RECAST_DATE.add(recast.day_of_month)
-        Log.d("kek", LIST_OF_RECAST_DATE.toString())
-        holder.date.text = "Переработка ${recast.day_of_month} $APP_DATE_PICK_MONTH_L"
-        holder.info.text = "${recast.recast_hours} час(а)"
-    })
-
-}
-
-fun readDataHolidayForRecycleView(holder: CalendarFragment.HolidayHolder,
-                                 model: Holiday){
-    val mRefHoliday: DatabaseReference = REF_DATABASE_ROOT.child(NODE_HOLIDAY).child(UID).child(APP_CALENDAR_DATE_YEAR.toString())
-        .child(APP_CALENDAR_DATE_MONTH.toString()).child(model.day_of_month.toString())
-    mRefHoliday.addValueEventListener(AppValueEventListener {
-        val holiday = it.getHoliday()
-        LIST_OF_HOLIDAY_DATE.add(holiday.day_of_month)
-        holder.date.text = "Отпуск ${holiday.day_of_month} $APP_DATE_PICK_MONTH_L"
-        holder.info.text = "C ${holiday.holiday_start} по ${holiday.holiday_end}"
-    })
-
-}
 
 fun deleteData(valueNODE: String,valueDay: Int){
     REF_DATABASE_ROOT.child(valueNODE).child(UID).child(APP_CALENDAR_DATE_YEAR.toString()).child(APP_CALENDAR_DATE_MONTH.toString()).child(valueDay.toString())
         .removeValue()
 }
-
-
-
-
-fun DataSnapshot.getRecast(): Recast = this.getValue(Recast::class.java)?: Recast()
-fun DataSnapshot.getHoliday(): Holiday = this.getValue(Holiday::class.java)?: Holiday()
