@@ -1,22 +1,19 @@
 package com.example.rzob21.utilits
 
-import android.util.Log
-import com.example.rzob21.UI.fragments.CalendarFragment
-import com.example.rzob21.models.Holiday
 import com.example.rzob21.models.Recast
-import com.example.rzob21.models.User
+import com.example.rzob21.models.UserLocalDB
+import com.example.rzob21.models.Vacation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.event_recast_item.view.*
 
 lateinit var AUTH: FirebaseAuth
 lateinit var REF_DATABASE_ROOT: DatabaseReference
-lateinit var USER: User
+lateinit var USER: UserLocalDB
 lateinit var UID: String
 lateinit var RECAST: Recast
-lateinit var HOLIDAY: Holiday
+lateinit var VACATION: Vacation
 
 
 
@@ -32,7 +29,7 @@ const val CHILD_SALARY = "salary"//зп
 const val CHILD_WORK_DAY = "work_days"// кол-во раб дней
 const val CHILD_WORKED_DAY = "worked_days"//отработанные дни
 const val CHILD_SICK_DAYS = "sick_days"//больничные дни
-const val CHILD_HOLIDAY = "holiday"//отпуск
+const val CHILD_VACATION = "holiday"//отпуск
 const val CHILD_DAY_OF_WEEK = "day_of_week"//день недели
 const val CHILD_RECAST_HOURS = "recast_hours"//
 const val CHILD_RECAST_DAY = "day_of_month"
@@ -48,9 +45,18 @@ const val CHILD_NUMBER_OF_HOLIDAY = "number_of_holiday"//кол-во дней о
 fun initFirebase(){
     AUTH = FirebaseAuth.getInstance()
     REF_DATABASE_ROOT = FirebaseDatabase.getInstance().reference
-    USER = User()
-    RECAST = Recast()
-    HOLIDAY = Holiday()
+    USER = UserLocalDB()
+    RECAST = Recast(
+        recast_hours = 0.0,
+        weekend = false
+    )
+    VACATION = Vacation(
+        date_start = "",
+        date_stop = "",
+        number_of_days = 0,
+        year = 0,
+        month = 0
+    )
     UID = AUTH.currentUser?.uid.toString()
 }
 

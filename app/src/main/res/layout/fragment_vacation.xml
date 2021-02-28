@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UI.fragments.HolidayFragment">
+    tools:context=".UI.fragments.VacationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/holiday_header_block"
+        android:id="@+id/vacation_header_block"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/osnovnoy"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageViewHol"
+            android:id="@+id/imageViewVac"
             android:layout_width="@dimen/settings_icon_width"
             android:layout_height="@dimen/settings_icon_height"
             android:layout_marginStart="@dimen/horizontal_margin"
@@ -28,10 +28,10 @@
 
 
         <TextView
-            android:id="@+id/holiday_data"
+            android:id="@+id/vacation_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/imageViewHol"
+            app:layout_constraintStart_toEndOf="@id/imageViewVac"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="@dimen/very_large_text_size"
             android:textColor="@color/colorBlack"
@@ -46,17 +46,17 @@
             android:textColor="@color/colorBlack"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:text="Отпуск"
-            app:layout_constraintStart_toEndOf="@id/imageViewHol"
-            app:layout_constraintTop_toBottomOf="@id/holiday_data"
+            app:layout_constraintStart_toEndOf="@id/imageViewVac"
+            app:layout_constraintTop_toBottomOf="@id/vacation_data"
             android:textStyle="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/holiday_input_days"
+        android:id="@+id/vacation_input_days"
         android:hint="@string/holiday_input_string"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/holiday_header_block"
+        app:layout_constraintTop_toBottomOf="@id/vacation_header_block"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/editTextNumeric"
 

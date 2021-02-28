@@ -10,6 +10,9 @@ import com.example.rzob21.models.Recast
 import com.example.rzob21.models.User
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.fragment_recast.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class RecastFragment(val Day: Int,var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_recast) {
@@ -41,7 +44,7 @@ class RecastFragment(val Day: Int,var boolean: Boolean = false) : BaseChangeCale
         if (hours.isEmpty() || hours.toDouble() == 0.0){
             showToast(getString(R.string.recast_toast_hours_is_empty))
         }else {
-            val recast = Recast(hours.toDouble(), APP_CALENDAR_DATE_DAY, APP_DATE_DAY_OF_WEEK)
+            val recast = Recast(hours.toDouble(), false)
 
                 showToast(getString(R.string.toast_data_update))
                 fragmentManager?.popBackStack()
