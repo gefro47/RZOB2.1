@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rzob21.R
+import com.example.rzob21.UI.adapters.RecastAdapter
 import com.example.rzob21.UI.adapters.VacationAdapter
 import com.example.rzob21.data.CalendarInfoDatabase
 import com.example.rzob21.utilits.*
@@ -20,7 +22,7 @@ import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
-    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).vacationDao()
+    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
 
     override fun onStart() {
         super.onStart()
@@ -33,28 +35,13 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         super.onResume()
         initFields()
         lifecycleScope.launch {
-            initVacation()
+            initVacationList()
+            initRecastList()
             initRecyclerView()
         }
     }
 
-    private suspend fun initVacation() {
-        LIST_VACATION_OF_MONTH = mutableListOf()
-//        dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)
-//        Log.d("List", dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1).size.toString())
-        for (i in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1).indices){
-            for(j in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)[i].vacationDate.indices){
-                LIST_VACATION_OF_MONTH.add(dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)[i].vacationDate[j].Date)
-            }
-        }
-        LIST_VACATION_OF_NEXT_MONTH = mutableListOf()
-        for (i in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2).indices){
-            for(j in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2)[i].vacationDate.indices){
-                LIST_VACATION_OF_NEXT_MONTH.add(dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2)[i].vacationDate[j].Date)
-            }
-        }
-        Log.d("List1", LIST_VACATION_OF_MONTH.toString())
-    }
+
 
 
     private fun initFields() {
@@ -67,12 +54,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 .setView(mDialogView)
                 .show()
 
-            if (LIST_OF_RECAST_DATE.contains(APP_CALENDAR_DATE_DAY)){
+            if (LIST_OF_RECAST_DATE.contains(APP_DATE)){
 //            if (LIST_OF_HOLIDAYS.contains(APP_DATE)){
                 disabledItemOfChangeEventList(mDialogView.container_for_recast.recast_image, mDialogView.container_for_recast.recast_label_view, mDialogView.container_for_recast)
             }else{
             mDialogView.container_for_recast.setOnClickListener {
-                replaceFragment(RecastFragment(APP_CALENDAR_DATE_DAY))
+                replaceFragment(RecastFragment(APP_DATE))
                 mBuilder.cancel()
             }
             }
@@ -80,7 +67,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 disabledItemOfChangeEventList(mDialogView.container_for_holiday.holiday,mDialogView.container_for_holiday.holiday_label,mDialogView.container_for_holiday)
             }else{
                 mDialogView.container_for_holiday.setOnClickListener {
-                    replaceFragment(VacationFragment())
+                    replaceFragment(VacationFragment(APP_DATE))
                     mBuilder.cancel()
                 }
             }
@@ -89,13 +76,18 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
     private suspend fun initRecyclerView() {
-        val adapter = VacationAdapter()
+        val adapter1 = VacationAdapter()
+        val adapter2 = RecastAdapter()
+        val adapter = ConcatAdapter(adapter1, adapter2)
         val recyclerView = calendar_recycle_view
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val vacation = dao.getVacationList(APP_CALENDAR_DATE_MONTH + 1)
-        adapter.setData(vacation)
+        adapter1.setData(vacation)
+        val recast = dao.getRecastList(APP_CALENDAR_DATE_MONTH + 1)
+        Log.d("recast", recast.toString())
+        adapter2.setData(recast)
     }
 
     fun initDay(){
@@ -105,7 +97,8 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             APP_CALENDAR_DATE_MONTH_CHECK = p_date_m
             APP_CALENDAR_DATE_YEAR_CHECK = p_date_y
             lifecycleScope.launch {
-                initVacation()
+                initVacationList()
+                initRecastList()
                 initRecyclerView()
             }
         }

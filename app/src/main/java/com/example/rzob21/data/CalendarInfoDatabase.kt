@@ -19,7 +19,7 @@ import com.example.rzob21.models.VacationDate
 )
 abstract class CalendarInfoDatabase: RoomDatabase() {
 
-    abstract fun vacationDao(): CalendarInfoDao
+    abstract fun calendarInfoDao(): CalendarInfoDao
 
     companion object{
         @Volatile

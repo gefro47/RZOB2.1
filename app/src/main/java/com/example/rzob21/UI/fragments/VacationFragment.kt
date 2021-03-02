@@ -8,33 +8,42 @@ import com.example.rzob21.R
 import com.example.rzob21.data.CalendarInfoDatabase
 import com.example.rzob21.models.Vacation
 import com.example.rzob21.utilits.*
-import kotlinx.android.synthetic.main.fragment_recast.*
+import kotlinx.android.synthetic.main.event_vacation_item.*
 import kotlinx.android.synthetic.main.fragment_vacation.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 
 
-class VacationFragment : BaseChangeCalendarFragment(R.layout.fragment_vacation) {
+class VacationFragment(val Day: String,var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_vacation) {
 
-    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).vacationDao()
+    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
 
     override fun onResume() {
         super.onResume()
         vacation_data.text = APP_CALENDAR_DATE
-        vacation_input_days.requestFocus()
-        showKeyboard()
-        vacation_input_days.setOnKeyListener(View.OnKeyListener{ v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
-                change()
-                return@OnKeyListener true
-            }
-            false
-        })
+        if (boolean){
+            vacation_delete_image.visibility = View.VISIBLE
+            initVacation()
+        }else vacation_delete_image.visibility = View.INVISIBLE
+            vacation_input_days.requestFocus()
+            showKeyboard()
+            vacation_input_days.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                        deleteVacation()
+                        change()
+                    return@OnKeyListener true
+                }
+                false
+            })
 
-
-
+        vacation_delete_image.setOnClickListener {
+            deleteVacation()
+            showToast(getString(R.string.toast_data_update))
+            fragmentManager?.popBackStack()
+        }
     }
     override fun change() {
         val hours = vacation_input_days.text.toString()
@@ -44,6 +53,7 @@ class VacationFragment : BaseChangeCalendarFragment(R.layout.fragment_vacation) 
             APP_VACATION_DAY = vacation_input_days.text.toString().toInt()
             if(vacationPlusDate()) {
                 next()
+                showToast(getString(R.string.toast_data_update))
                 fragmentManager?.popBackStack()
             }else{
 //                Toast.makeText(context, "kek", Toast.LENGTH_SHORT).show()
@@ -62,16 +72,30 @@ class VacationFragment : BaseChangeCalendarFragment(R.layout.fragment_vacation) 
 
                 Log.d("kek", vacation1.toString())
                 Log.d("kek", vacation2.toString())
-                showToast(getString(R.string.toast_data_update))
-                fragmentManager?.popBackStack()
             }
         }else{
             val vacation = Vacation(APP_DATE, APP_CALENDAR_DATE_PLUS_VACATION, APP_VACATION_DAY, APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH + 1)
-            lifecycleScope.launch {
+            CoroutineScope(Dispatchers.IO).async {
                 dao.insertVacation(vacation)
                 Log.d("kek", vacation.toString())
-                showToast(getString(R.string.toast_data_update))
-                fragmentManager?.popBackStack()
+            }
+        }
+    }
+
+    fun deleteVacation(){
+        CoroutineScope(Dispatchers.IO).async {
+            dao.deleteVacation(Day)
+            dao.deleteVacationDate(Day)
+        }
+    }
+
+    fun initVacation(){
+        CoroutineScope(Dispatchers.IO).async {
+            val number_of_days = dao.getVacation(Day).number_of_days
+            if (number_of_days != 0){
+                vacation_input_days.setText(number_of_days.toString())
+                vacation_input_days.requestFocus()
+                vacation_input_days.setSelection(number_of_days.toString().length)
             }
         }
     }

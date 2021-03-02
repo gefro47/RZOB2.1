@@ -112,6 +112,7 @@ fun calendarikToday():String {
 //        }
 //    }
 //}
+val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
 
 fun vacationPlusDate(): Boolean{
     val status: Boolean
@@ -211,10 +212,40 @@ fun insertVacationDate(schet: Int, calendarCount: Calendar, calendarStart: Calen
         calendarCount.add(Calendar.DAY_OF_MONTH, i)
         val countDate = formate.format(calendarCount.time)
         val startDate = formate.format(calendarStart.time)
-        val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).vacationDao()
+//        val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
         CoroutineScope(Dispatchers.IO).launch {
             dao.insertVacationDate(VacationDate(countDate, startDate))
         }
         calendarCount.add(Calendar.DAY_OF_MONTH, -i)
     }
+}
+
+suspend fun initVacationList() {
+    LIST_VACATION_OF_MONTH = mutableListOf()
+//        dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)
+//        Log.d("List", dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1).size.toString())
+    for (i in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1).indices){
+        for(j in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)[i].vacationDate.indices){
+            LIST_VACATION_OF_MONTH.add(dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 1)[i].vacationDate[j].Date)
+        }
+    }
+    LIST_VACATION_OF_NEXT_MONTH = mutableListOf()
+    for (i in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2).indices){
+        for(j in dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2)[i].vacationDate.indices){
+            LIST_VACATION_OF_NEXT_MONTH.add(dao.getVacationWithList(APP_CALENDAR_DATE_MONTH + 2)[i].vacationDate[j].Date)
+        }
+    }
+    Log.d("List1", LIST_VACATION_OF_MONTH.toString())
+    LIST_OF_VACATION_DATE_START = mutableListOf()
+    for (i in dao.getVacationList(APP_CALENDAR_DATE_MONTH + 1).indices){
+        LIST_OF_VACATION_DATE_START.add(dao.getVacationList(APP_CALENDAR_DATE_MONTH + 1)[i].date_start)
+    }
+}
+
+suspend fun initRecastList(){
+    LIST_OF_RECAST_DATE = mutableListOf()
+    for (i in dao.getRecastList(APP_CALENDAR_DATE_MONTH + 1).indices){
+        LIST_OF_RECAST_DATE.add(dao.getRecastList(APP_CALENDAR_DATE_MONTH + 1)[i].date)
+    }
+    Log.d("LIST_OF_RECAST_DATE", LIST_OF_RECAST_DATE.toString())
 }

@@ -58,11 +58,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vacation_header_block"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/editTextNumeric"
+        style="@style/editTextNumeric"/>
 
-        />
-
-
-
+    <ImageView
+        android:id="@+id/vacation_delete_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginBottom="@dimen/vertical_margin"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

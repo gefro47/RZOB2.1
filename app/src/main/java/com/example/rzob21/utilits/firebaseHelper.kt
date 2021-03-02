@@ -47,8 +47,11 @@ fun initFirebase(){
     REF_DATABASE_ROOT = FirebaseDatabase.getInstance().reference
     USER = UserLocalDB()
     RECAST = Recast(
+        date = "",
         recast_hours = 0.0,
-        weekend = false
+        weekend = false,
+        year = 0,
+        month = 0
     )
     VACATION = Vacation(
         date_start = "",
