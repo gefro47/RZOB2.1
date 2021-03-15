@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rzob21.R
 import com.example.rzob21.UI.fragments.RecastFragment
 import com.example.rzob21.models.Recast
-import com.example.rzob21.models.Vacation
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.event_vacation_item.view.*
 import java.text.DateFormat
@@ -41,7 +40,7 @@ class RecastAdapter: RecyclerView.Adapter<RecastAdapter.MyViewHolder>() {
 
                 val formate = SimpleDateFormat("yyyy-MM-dd")
                 val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG)
-                APP_CALENDAR_DATE_DAY = LIST_OF_RECAST_DATE[position].split("-")[2].toInt()
+                APP_CALENDAR_DATE_DAY = LIST_RECAST_OF_MONTH[position].split("-")[2].toInt()
                 val calendar1 = Calendar.getInstance()
                 calendar1.set(APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH, APP_CALENDAR_DATE_DAY)
                 APP_CALENDAR_DATE = dateFormatter.format(calendar1.time)

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Vacation(
+data class SickLeave(
     @PrimaryKey(autoGenerate = false)
     var date_start: String,
     var date_stop: String,

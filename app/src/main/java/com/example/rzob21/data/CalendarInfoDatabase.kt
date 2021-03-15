@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.rzob21.models.Recast
-import com.example.rzob21.models.Vacation
-import com.example.rzob21.models.VacationDate
+import com.example.rzob21.models.*
 
 
 @Database(
     entities = [
+        SickLeave::class,
+        SickLeaveDate::class,
         Vacation::class,
         VacationDate::class,
         Recast::class

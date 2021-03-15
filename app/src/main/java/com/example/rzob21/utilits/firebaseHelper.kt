@@ -46,20 +46,21 @@ fun initFirebase(){
     AUTH = FirebaseAuth.getInstance()
     REF_DATABASE_ROOT = FirebaseDatabase.getInstance().reference
     USER = UserLocalDB()
-    RECAST = Recast(
-        date = "",
-        recast_hours = 0.0,
-        weekend = false,
-        year = 0,
-        month = 0
-    )
-    VACATION = Vacation(
-        date_start = "",
-        date_stop = "",
-        number_of_days = 0,
-        year = 0,
-        month = 0
-    )
+//    RECAST = Recast(
+//        date = "",
+//        recast_hours = 0.0,
+//        weekend = false,
+//        year = 0,
+//        month = 0
+//    )
+//    VACATION = Vacation(
+//        date_start = "",
+//        date_stop = "",
+//        number_of_days = 0,
+//        year = 0,
+//        month_start = 0,
+//        month_stop = 0
+//    )
     UID = AUTH.currentUser?.uid.toString()
 }
 

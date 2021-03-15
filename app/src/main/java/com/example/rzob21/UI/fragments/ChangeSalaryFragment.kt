@@ -1,13 +1,10 @@
 package com.example.rzob21.UI.fragments
 
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.lifecycle.ViewModelProvider
-import com.example.rzob21.MainActivity
 import com.example.rzob21.R
 import com.example.rzob21.models.UserLocalDB
-import com.example.rzob21.utilits.*
+import com.example.rzob21.utilits.USER
+import com.example.rzob21.utilits.showToast
 import com.example.rzob21.viewmodel.UserLocalDBViewModel
 import kotlinx.android.synthetic.main.fragment_change_salary.*
 
