@@ -28,7 +28,7 @@
     <string name="register_text_enter_code">Введите код</string>
     <string name="register_text_we_send">Мы отправили SMS с кодом проверки на ваш телефон</string>
     <string name="register_hint_default_code">- - - - - -</string>
-    <string name="register_title_your_phone">Ваш телефон</string>
+    <string name="register_title_your_phone">Вход в аккаунт</string>
     <string name="register_toast_enter_phone">Введите номер телефона</string>
     <string name="settings_hint_input_name">Имя</string>
     <string name="settings_hint_input_surname">Фамилия</string>
@@ -47,4 +47,6 @@
     <string name="recast_toast_hours_is_empty">Поле \"часы\" не может быть \nпустым или равным нулю</string>
     <string name="holiday_input_string">Укажите кол-во дней</string>
     <string name="sick_leave_input_string">Укажите кол-во дней</string>
+    <string name="data_post_to_server">Данные записаны</string>
+    <string name="month_info_name_header">Отчет</string>
 </resources>

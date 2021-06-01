@@ -1,15 +1,8 @@
-package com.example.rzob21.models
-
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+package com.gefro.springbootkotlinRZOBbackend.models
 
 
-@Entity
 data class Recast(
-    @PrimaryKey(autoGenerate = false)
+    var id: Int? = null,
     var date: String,
-    var recast_hours: Double,
-    var weekend: Boolean,
-    var year: Int,
-    var month: Int
+    var recasthours: Double? = 0.0
 )

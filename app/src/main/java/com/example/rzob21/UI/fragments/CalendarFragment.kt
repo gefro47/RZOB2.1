@@ -1,16 +1,18 @@
 package com.example.rzob21.UI.fragments
 
+import android.app.usage.UsageEvents
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import com.example.rzob21.ApiInterface.RecastApi
 import com.example.rzob21.R
-import com.example.rzob21.data.CalendarInfoDatabase
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.change_event_list.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.sql.Date
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,26 +20,33 @@ import java.util.*
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
-    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
+    val calendar1 = Calendar.getInstance()
 
     override fun onStart() {
         super.onStart()
         if(APP_CALENDAR_DATE == "") data.text = calendarikToday() else data.text = APP_CALENDAR_DATE
         calendarik()
         hideKeyboard()
+//        showToast("start")
     }
 
     override fun onResume() {
         super.onResume()
-        init()
+        if (APP_DATE != null){
+            calendar1.set(APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH, APP_CALENDAR_DATE_DAY)
+            calendar.setDate(calendar1.timeInMillis, false, false)
+        }
+        initRecast()
     }
+
 
 
 
 
     private fun initFields() {
+
         container_for_add.setOnClickListener {
-            if (LIST_RECAST_OF_MONTH.contains(APP_DATE)){
+            if (LIST_OF_RECAST_DATE.contains(APP_DATE)){
                 showToast("В этот день уже добалена переработка!")
             }else if(LIST_VACATION_OF_MONTH.contains(APP_DATE)){
                 showToast("В этот день уже добавлен отпуск!")
@@ -53,15 +62,15 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     .show()
 
                 mDialogView.container_for_recast.setOnClickListener {
-                    replaceFragment(RecastFragment(APP_DATE))
+                    replaceFragment(RecastFragment())
                     mBuilder.cancel()
                 }
-                mDialogView.container_for_holiday.setOnClickListener {
-                    replaceFragment(VacationFragment(APP_DATE))
-                    mBuilder.cancel()
-                }
+//                mDialogView.container_for_holiday.setOnClickListener {
+//                    replaceFragment(VacationFragment(APP_DATE))
+//                    mBuilder.cancel()
+//                }
                 mDialogView.container_for_sick_days.setOnClickListener {
-                    replaceFragment(SickLeaveFragment(APP_DATE))
+                    replaceFragment(SickLeaveFragment())
                     mBuilder.cancel()
                 }
             }
@@ -74,39 +83,49 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         if (p_date_m != APP_CALENDAR_DATE_MONTH_CHECK || p_date_y != APP_CALENDAR_DATE_YEAR_CHECK){
             APP_CALENDAR_DATE_MONTH_CHECK = p_date_m
             APP_CALENDAR_DATE_YEAR_CHECK = p_date_y
-            init()
+            initRecast()
         }
     }
 
     fun calendarik(){
         val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG)
         val formate1 = SimpleDateFormat("MMMM")
-        val formate = SimpleDateFormat("yyyy-MM-dd")
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
             APP_CALENDAR_DATE_YEAR = year
             APP_CALENDAR_DATE_MONTH = month
             APP_CALENDAR_DATE_DAY = dayOfMonth
 
-            val calendar1 = Calendar.getInstance()
+           // val calendar1 = Calendar.getInstance()
             calendar1.set(year, month, dayOfMonth)
-            APP_DATE = formate.format(calendar1.time)
+            APP_DATE = Date.valueOf("$year-${month + 1}-$dayOfMonth")
             APP_CALENDAR_DATE = dateFormatter.format(calendar1.time)
             APP_DATE_PICK_MONTH_L = formate1.format(calendar1.time)
             data.text = APP_CALENDAR_DATE
-            Log.d("Date", APP_DATE)
-            APP_DATE_DAY_OF_WEEK = calendar1.get(Calendar.DAY_OF_WEEK)
+            Log.d("Date", APP_DATE.toString())
             initDay()
         }
     }
 
-    fun init(){
-        lifecycleScope.launch {
-            initVacationList()
-            initRecastList()
-            initSickLeaveList()
-            initRecyclerView(calendar_recycle_view, requireContext())
+
+    fun initRecast(){
+//      Вариант 3
+        val initYearAndMonth = GlobalScope.launch(Dispatchers.Main) {
+            val postOperation = async(Dispatchers.IO) {
+                APP_DATE?.let { RecastApi().getAllByYearAndMonth(it) }
+                Log.d("Kek3", APP_DATE.toString())
+            }
+            postOperation.await()
+            LIST_OF_RECAST_DATE = mutableListOf()
+            for (i in LIST_RECAST_OF_MONTH.indices) {
+                LIST_OF_RECAST_DATE.add(Date.valueOf(LIST_RECAST_OF_MONTH[i].date))
+//                Log.d("listdateofrecast", LIST_OF_RECAST_DATE.toString())
+//                Log.d("listdateofrecast", APP_DATE.toString())
+            }
+            initRecyclerViewForCalendarFragment(calendar_recycle_view, requireContext())
             initFields()
         }
+
     }
+
 }

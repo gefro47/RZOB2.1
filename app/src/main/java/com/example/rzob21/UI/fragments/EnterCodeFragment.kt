@@ -1,6 +1,7 @@
 package com.example.rzob21.UI.fragments
 
 import androidx.fragment.app.Fragment
+import com.example.rzob21.ApiInterface.UserApi
 import com.example.rzob21.MainActivity
 import com.example.rzob21.R
 import com.example.rzob21.activites.RegisterActivity
@@ -32,14 +33,28 @@ class EnterCodeFragment(val PhoneNumber: String, val id: String) : Fragment(R.la
                 var dateMap = mutableMapOf<String, Any>()
                 dateMap[CHILD_ID] = uid
                 dateMap[CHILD_PHONE] = PhoneNumber
+//                if(this.isAdded){
+//                    showToast("da")
+//                }else{
+//                    showToast("net")
+//                }
 
-                REF_DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(dateMap)
+                REF_DATABASE_ROOT
+                    .child(NODE_USERS)
+                    .child(uid)
+                    .updateChildren(dateMap)
                     .addOnCompleteListener {task2 ->
                         if (task2.isSuccessful){
-                            showToast("Добро пожаловать!")
-                            (activity as RegisterActivity).replaceActivity(MainActivity())
+//                            if(UserApi().getUser(uid)){
+//                                showToast("Добро пожаловать!")
+//                                (activity as RegisterActivity).replaceActivity(MainActivity())
+//                            }else{
+//                                UserApi().post(uid, PhoneNumber)
+                                showToast("Добро пожаловать!")
+                                (activity as RegisterActivity).replaceActivity(MainActivity())
+//                            }
                         }else showToast(task2.exception?.message.toString())
-                }
+                    }
             } else showToast(task1.exception?.message.toString())
         }
     }

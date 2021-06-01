@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recast_header_block"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/editTextNumeric"/>
+        style="@style/editTextNumericDecimal"/>
 
     <ImageView
         android:id="@+id/recast_delete_image"

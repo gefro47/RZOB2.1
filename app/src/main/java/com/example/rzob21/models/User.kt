@@ -1,9 +1,10 @@
 package com.example.rzob21.models
 
+
 data class User(
     val id: String = "",
-    val phone: String = "",
-    var position: String = "",
-    var salary: Double = 0.0,
-    var average_salary: Double = 0.0
+    val phone: String? = null,
+    var position: String? = null,
+    var salary: Double? = null,
+    var average_salary: Double? = null
 )

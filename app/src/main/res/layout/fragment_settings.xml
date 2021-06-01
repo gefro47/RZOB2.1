@@ -119,31 +119,31 @@
             style="@style/separator" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/settings_btn_change_history"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/settings_btn_change_salary"
-        style="@style/settingsButtons">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/settings_btn_change_history"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/settings_btn_change_salary"-->
+<!--        style="@style/settingsButtons">-->
 
-        <TextView
-            android:id="@+id/settings_history"
-            android:text="@string/settings_history"
-            style="@style/normalText"
-            tools:ignore="MissingConstraints" />
+<!--        <TextView-->
+<!--            android:id="@+id/settings_history"-->
+<!--            android:text="@string/settings_history"-->
+<!--            style="@style/normalText"-->
+<!--            tools:ignore="MissingConstraints" />-->
 
-        <TextView
-            android:id="@+id/settings_label_history"
-            android:text="@string/settings_label_history"
-            app:layout_constraintTop_toBottomOf="@id/settings_history"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/smallText" />
-        <View
-            app:layout_constraintTop_toBottomOf="@id/settings_label_history"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/separator" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/settings_label_history"-->
+<!--            android:text="@string/settings_label_history"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/settings_history"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            style="@style/smallText" />-->
+<!--        <View-->
+<!--            app:layout_constraintTop_toBottomOf="@id/settings_label_history"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            style="@style/separator" />-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

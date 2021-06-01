@@ -1,28 +1,30 @@
 package com.example.rzob21.UI.fragments
 
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import com.example.rzob21.ApiInterface.RecastApi
 import com.example.rzob21.R
-import com.example.rzob21.data.CalendarInfoDatabase
-import com.example.rzob21.models.Recast
 import com.example.rzob21.utilits.*
+import com.gefro.springbootkotlinRZOBbackend.models.Recast
 import kotlinx.android.synthetic.main.fragment_recast.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import retrofit2.*
 
 
-class RecastFragment(val Day: String,var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_recast) {
+class RecastFragment(val recast: Recast = Recast(date = APP_DATE.toString(),recasthours = 0.0), var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_recast) {
 
-    val dao = CalendarInfoDatabase.getInstance(APP_ACTIVITY).calendarInfoDao()
+
 
     override fun onResume() {
+//        Log.d("kek", APP_DATE)
+//        Log.d("kek", APP_DATE_TODAY)
+//        Log.d("kek", APP_CALENDAR_DATE)
         super.onResume()
         if (boolean){
             recast_delete_image.visibility = View.VISIBLE
-            initRecast()
+            recast_input_hours.setText(recast.recasthours.toString())
+            recast_input_hours.requestFocus()
+            recast_input_hours.setSelection(recast.recasthours.toString().length)
         }else recast_delete_image.visibility = View.INVISIBLE
         recast_data.text = APP_CALENDAR_DATE
         recast_input_hours.requestFocus()
@@ -36,36 +38,44 @@ class RecastFragment(val Day: String,var boolean: Boolean = false) : BaseChangeC
             false
             })
         recast_delete_image.setOnClickListener{
-            CoroutineScope(Dispatchers.IO).async {
-                dao.deleteByRecastDay(Day)
+            val initDelete = GlobalScope.launch(Dispatchers.Main){
+                val postOperation = async(Dispatchers.IO){
+                    RecastApi().delete(Recast(recast.id, APP_DATE.toString()))
+                }
+                postOperation.await()
+                showToast(getString(R.string.toast_data_update))
+                fragmentManager?.popBackStack()
             }
-            showToast(getString(R.string.toast_data_update))
-            fragmentManager?.popBackStack()
         }
     }
 
     override fun change() {
-        val hours = recast_input_hours.text.toString()
-        if (hours.isEmpty() || hours.toDouble() == 0.0){
-            showToast(getString(R.string.recast_toast_hours_is_empty))
-        }else {
-            val weekend = LIST_OF_HOLIDAYS.contains(Day)
-            val recast = Recast(Day, hours.toDouble(), weekend, APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH + 1)
-            CoroutineScope(Dispatchers.IO).async  {
-                dao.insertRecast(recast)
+        if (boolean){
+            val hours = recast_input_hours.text.toString()
+            if (hours.isEmpty() || hours.toDouble() == 0.0){
+                showToast(getString(R.string.recast_toast_hours_is_empty))
+            }else {
+                val recast = Recast(recast.id, recast.date, hours.toDouble())
+                val initPut = GlobalScope.launch(Dispatchers.Main) {
+                    val putOperation = async(Dispatchers.IO) {
+                        RecastApi().put(recast)
+                    }
+                    putOperation.await()
+                    fragmentManager?.popBackStack()
+                }
             }
-            showToast(getString(R.string.toast_data_update))
-            fragmentManager?.popBackStack()
-        }
-    }
-    fun initRecast(){
-        CoroutineScope(Dispatchers.IO).async {
-            val hours = dao.getRecastHours(Day).recast_hours
-            Log.d("hours", hours.toString())
-            if (hours != 0.0) {
-                recast_input_hours.setText(hours.toString())
-                recast_input_hours.requestFocus()
-                recast_input_hours.setSelection(hours.toString().length)
+        }else{
+            val hours = recast_input_hours.text.toString()
+            if (hours.isEmpty() || hours.toDouble() == 0.0){
+                showToast(getString(R.string.recast_toast_hours_is_empty))
+            }else {
+                val initPost = GlobalScope.launch(Dispatchers.Main) {
+                    val postOperation = async(Dispatchers.IO) {
+                        RecastApi().post(hours.toDouble())
+                    }
+                    postOperation.await()
+                    fragmentManager?.popBackStack()
+                }
             }
         }
     }
