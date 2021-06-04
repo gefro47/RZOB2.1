@@ -52,14 +52,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/sick_leave_input_days"
-        android:hint="@string/sick_leave_input_string"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sick_leave_header_block"
-        app:layout_constraintEnd_toEndOf="parent"
-        style="@style/editTextNumeric"/>
-
     <ImageView
         android:id="@+id/sick_leave_delete_image"
         android:layout_width="45dp"
@@ -71,13 +63,48 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
+        android:id="@+id/big_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/sick_leave_input_days"
-        android:layout_marginTop="@dimen/vertical_margin"
         android:layout_marginStart="@dimen/horizontal_margin"
         android:layout_marginEnd="@dimen/horizontal_margin"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:text="@string/text_for_sick_leave_page"
         android:textColor="@color/colorGrey"
-        android:text="@string/text_for_sick_leave_page"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sick_leave_header_block" />
+
+    <ImageView
+        android:id="@+id/date_picker_sick_leave"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_menu_pererab_day"
+        app:layout_constraintBottom_toTopOf="@id/sick_leave_delete_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/start_sick_leave_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/big_text"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/stop_sick_leave_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/start_sick_leave_text"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/horizontal_margin"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

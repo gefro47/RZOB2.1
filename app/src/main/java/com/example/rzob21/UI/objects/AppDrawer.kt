@@ -57,10 +57,10 @@ class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androi
             .withSelectedItem(-1)
 //            .withAccountHeader(mHeader)
             .addDrawerItems(
-                PrimaryDrawerItem().withIdentifier(100)
-                    .withName("Переработка за день")
-                    .withSelectable(false)
-                    .withIcon(R.drawable.ic_menu_pererab_day),
+//                PrimaryDrawerItem().withIdentifier(100)
+//                    .withName("Календарь")
+//                    .withSelectable(false)
+//                    .withIcon(R.drawable.ic_menu_pererab_day),
                 PrimaryDrawerItem().withIdentifier(101)
                     .withName("Инфо за месяц")
                     .withSelectable(false)
@@ -77,10 +77,10 @@ class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androi
                     .withName("Больничный")
                     .withSelectable(false)
                     .withIcon(R.drawable.ic_menu_bolnich),
-                PrimaryDrawerItem().withIdentifier(105)
-                    .withName("Командировка")
-                    .withSelectable(false)
-                    .withIcon(R.drawable.ic_menu_komandir),
+//                PrimaryDrawerItem().withIdentifier(105)
+//                    .withName("Командировка")
+//                    .withSelectable(false)
+//                    .withIcon(R.drawable.ic_menu_komandir),
                 DividerDrawerItem(),
                 PrimaryDrawerItem().withIdentifier(106)
                     .withName("Настройки")
@@ -93,9 +93,9 @@ class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androi
                     drawerItem: IDrawerItem<*>
                 ): Boolean {
                     when(position){
-                        1 -> mainActivity.replaceFragment(MonthInfoFragment())
-                        2 -> APP_ACTIVITY.replaceFragment(HistoryOfIncomeFragment())
-                        7 -> mainActivity.replaceFragment(SettingsFragment())
+                        0 -> mainActivity.replaceFragment(MonthInfoFragment())
+                        1 -> APP_ACTIVITY.replaceFragment(HistoryOfIncomeFragment())
+                        5 -> mainActivity.replaceFragment(SettingsFragment())
                     }
 //                    showToast(position.toString())
                     return false

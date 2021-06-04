@@ -34,7 +34,6 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         super.onResume()
         if (APP_DATE != null){
             calendar1.set(APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH, APP_CALENDAR_DATE_DAY)
-            calendar.setDate(calendar1.timeInMillis, false, false)
         }
         initRecast()
     }
