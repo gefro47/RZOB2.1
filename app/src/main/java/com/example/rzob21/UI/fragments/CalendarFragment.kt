@@ -1,12 +1,11 @@
 package com.example.rzob21.UI.fragments
 
-import android.app.usage.UsageEvents
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.rzob21.ApiInterface.RecastApi
+import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.change_event_list.view.*
@@ -16,6 +15,7 @@ import java.sql.Date
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -35,7 +35,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         if (APP_DATE != null){
             calendar1.set(APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH, APP_CALENDAR_DATE_DAY)
         }
-        initRecast()
+        initEvents()
     }
 
 
@@ -49,7 +49,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 showToast("В этот день уже добалена переработка!")
             }else if(LIST_VACATION_OF_MONTH.contains(APP_DATE)){
                 showToast("В этот день уже добавлен отпуск!")
-            }else if(LIST_SICK_LEAVE_OF_MONTH.contains(APP_DATE)){
+            }else if(LIST_OF_SICK_LEAVE_DATE.contains(APP_DATE)){
                 showToast("В этот день уже добавлен больничный!")
             }else{
                 val mDialogView = LayoutInflater.from(APP_ACTIVITY).inflate(
@@ -82,7 +82,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         if (p_date_m != APP_CALENDAR_DATE_MONTH_CHECK || p_date_y != APP_CALENDAR_DATE_YEAR_CHECK){
             APP_CALENDAR_DATE_MONTH_CHECK = p_date_m
             APP_CALENDAR_DATE_YEAR_CHECK = p_date_y
-            initRecast()
+            initEvents()
         }
     }
 
@@ -107,20 +107,33 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     }
 
 
-    fun initRecast(){
+    fun initEvents(){
 //      Вариант 3
         val initYearAndMonth = GlobalScope.launch(Dispatchers.Main) {
             val postOperation = async(Dispatchers.IO) {
-                APP_DATE?.let { RecastApi().getAllByYearAndMonth(it) }
+                APP_DATE?.let {
+                    RecastApi().getAllByYearAndMonth(it)
+                    SickLeaveApi().getAllByYearAndMonth(it)
+                }
                 Log.d("Kek3", APP_DATE.toString())
             }
             postOperation.await()
             LIST_OF_RECAST_DATE = mutableListOf()
+            LIST_OF_SICK_LEAVE_DATE = mutableListOf()
             for (i in LIST_RECAST_OF_MONTH.indices) {
                 LIST_OF_RECAST_DATE.add(Date.valueOf(LIST_RECAST_OF_MONTH[i].date))
 //                Log.d("listdateofrecast", LIST_OF_RECAST_DATE.toString())
 //                Log.d("listdateofrecast", APP_DATE.toString())
             }
+            for (i in LIST_SICK_LEAVE_OF_MONTH.indices){
+                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_start)
+                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_stop)
+                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+                for (j in 0 .. dif.toInt()){
+                    LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))
+                }
+            }
+            Log.d("listdateofsickleave", LIST_OF_SICK_LEAVE_DATE.toString())
             initRecyclerViewForCalendarFragment(calendar_recycle_view, requireContext())
             initFields()
         }

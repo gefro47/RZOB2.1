@@ -26,6 +26,7 @@ var APP_CALENDAR_DATE_YEAR_CHECK = 0
 var LIST_RECAST_OF_MONTH = mutableListOf<Recast>()
 var LIST_RECAST_OF_YEAR = mutableListOf<Recast>()
 var LIST_OF_RECAST_DATE = mutableListOf<Date>()
+var LIST_OF_SICK_LEAVE_DATE = mutableListOf<Date>()
 var LIST_OF_VACATION_DATE_START = mutableListOf<String>()
 var LIST_VACATION_OF_MONTH = mutableListOf<String>()
 var LIST_VACATION_OF_NEXT_MONTH = mutableListOf<String>()

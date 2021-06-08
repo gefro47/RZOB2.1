@@ -4,6 +4,6 @@ import java.sql.Date
 
 data class SickLeave(
     var id: Int? = null,
-    var date_start: Date,
-    var date_stop: Date
+    var date_start: String,
+    var date_stop: String
 )
