@@ -5,5 +5,5 @@ data class Income(
     var year: Int,
     var month: Int,
     var income_of_money: Double,
-    var math_calc: Boolean,
+    var math_calc: Boolean
 )

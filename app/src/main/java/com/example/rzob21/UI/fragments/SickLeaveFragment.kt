@@ -3,11 +3,18 @@ package com.example.rzob21.UI.fragments
 import android.app.DatePickerDialog
 import android.view.View
 import android.widget.DatePicker
+import com.example.rzob21.ApiInterface.RecastApi
+import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
 import com.example.rzob21.utilits.APP_CALENDAR_DATE
 import com.example.rzob21.utilits.APP_DATE
+import com.example.rzob21.utilits.SICK_LEAVE_STOP
 import com.example.rzob21.utilits.showToast
 import kotlinx.android.synthetic.main.fragment_sick_leave.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.DateFormat
 import java.util.*
@@ -35,8 +42,8 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
             val datePicker = context?.let { it1 ->
                 DatePickerDialog(it1, object : DatePickerDialog.OnDateSetListener {
                     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                        val stopDay = Date.valueOf("$year-${month + 1}-$dayOfMonth")
-                        stop_sick_leave_text.setText("Конец больничного: ${dateFormatter.format(stopDay)}")
+                        SICK_LEAVE_STOP = Date.valueOf("$year-${month + 1}-$dayOfMonth")
+                        stop_sick_leave_text.setText("Конец больничного: ${dateFormatter.format(SICK_LEAVE_STOP)}")
                     }
                 }, year, month, day)
             }
@@ -58,7 +65,15 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
     }
 
     override fun change() {
-
+        if (!boolean){
+            val initPost = GlobalScope.launch(Dispatchers.Main) {
+                val postOperation = async(Dispatchers.IO) {
+                    SickLeaveApi().post(SICK_LEAVE_STOP.toString())
+                }
+                postOperation.await()
+                fragmentManager?.popBackStack()
+            }
+        }
     }
 
 }
