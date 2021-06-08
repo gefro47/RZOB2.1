@@ -18,7 +18,7 @@ class RecastAdapter : RecyclerView.Adapter<RecastAdapter.MyViewHolder>() {
 
     private var recastList = emptyList<Recast>()
 
-    class MyViewHolder(itenView: View): RecyclerView.ViewHolder(itenView) {
+    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     }
 
@@ -29,7 +29,7 @@ class RecastAdapter : RecyclerView.Adapter<RecastAdapter.MyViewHolder>() {
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = recastList[position]
         val date = currentItem.date.split("-")
-        val day = date[2]
+        val day = date[2].toInt()
         holder.itemView.event_name.text = "Переработка ${day} $APP_DATE_PICK_MONTH_L"
         holder.itemView.event_info.text = "Переработано часов: ${currentItem.recasthours}"
         holder.itemView.recast_view.setOnClickListener(object : View.OnClickListener{

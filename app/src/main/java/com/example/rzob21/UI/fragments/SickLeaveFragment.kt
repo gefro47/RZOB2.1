@@ -3,13 +3,9 @@ package com.example.rzob21.UI.fragments
 import android.app.DatePickerDialog
 import android.view.View
 import android.widget.DatePicker
-import com.example.rzob21.ApiInterface.RecastApi
 import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
-import com.example.rzob21.utilits.APP_CALENDAR_DATE
-import com.example.rzob21.utilits.APP_DATE
-import com.example.rzob21.utilits.SICK_LEAVE_STOP
-import com.example.rzob21.utilits.showToast
+import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.fragment_sick_leave.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -18,7 +14,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.text.DateFormat
 import java.util.*
-import kotlin.time.milliseconds
+import java.util.concurrent.TimeUnit
 
 
 class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_sick_leave) {
@@ -34,10 +30,10 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
         }else sick_leave_delete_image.visibility = View.INVISIBLE
 
         date_picker_sick_leave.setOnClickListener {
-            val mcurrentTime = Calendar.getInstance()
-            val year = mcurrentTime.get(Calendar.YEAR)
-            val month = mcurrentTime.get(Calendar.MONTH)
-            val day = mcurrentTime.get(Calendar.DAY_OF_MONTH)
+            val currentTime = Calendar.getInstance()
+            val year = currentTime.get(Calendar.YEAR)
+            val month = currentTime.get(Calendar.MONTH)
+            val day = currentTime.get(Calendar.DAY_OF_MONTH)
 
             val datePicker = context?.let { it1 ->
                 DatePickerDialog(it1, object : DatePickerDialog.OnDateSetListener {
@@ -66,14 +62,35 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
 
     override fun change() {
         if (!boolean){
-            val initPost = GlobalScope.launch(Dispatchers.Main) {
-                val postOperation = async(Dispatchers.IO) {
-                    SickLeaveApi().post(SICK_LEAVE_STOP.toString())
+            if (check_date()){
+                val initPost = GlobalScope.launch(Dispatchers.Main) {
+                    val postOperation = async(Dispatchers.IO) {
+                        SickLeaveApi().post(SICK_LEAVE_STOP.toString())
+                    }
+                    postOperation.await()
+                    fragmentManager?.popBackStack()
                 }
-                postOperation.await()
-                fragmentManager?.popBackStack()
+            }else{
+                showToast("Этот больничный пересекается с другим, уже записанным, больничным!")
             }
         }
+    }
+
+    fun check_date(): Boolean{
+        val sick_leave_start = APP_DATE
+        val sick_leave_stop =  SICK_LEAVE_STOP
+        val dif = sick_leave_stop?.time?.minus(sick_leave_start?.time!!)?.let {
+            TimeUnit.DAYS.convert(
+                it, TimeUnit.MILLISECONDS)
+        }
+        if (dif != null) {
+            for (j in 0 .. dif.toInt()){
+                if(LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))){
+                    return false
+                }
+            }
+        }
+        return true
     }
 
 }

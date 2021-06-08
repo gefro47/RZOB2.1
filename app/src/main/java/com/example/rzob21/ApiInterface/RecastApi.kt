@@ -113,6 +113,7 @@ class RecastApi(){
                         LIST_RECAST_OF_MONTH.add(json[i])
                         Log.d("kek2", LIST_RECAST_OF_MONTH[i].toString())
                     }
+                    LIST_RECAST_OF_MONTH.sortBy { it.date }
 //                        }
                 }catch (e: Exception){
                     Log.d("kek2", e.toString())
