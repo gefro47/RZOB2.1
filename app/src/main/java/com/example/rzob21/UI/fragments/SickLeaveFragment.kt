@@ -1,10 +1,13 @@
 package com.example.rzob21.UI.fragments
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.view.View
 import android.widget.DatePicker
 import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
+import com.example.rzob21.models.SickLeave
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.fragment_sick_leave.*
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +20,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_sick_leave) {
+class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DATE.toString(),date_stop = ""), var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_sick_leave) {
 
     val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG)
 
@@ -27,6 +30,8 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
         start_sick_leave_text.setText("Начало больничного: $APP_CALENDAR_DATE")
         if (boolean){
             sick_leave_delete_image.visibility = View.VISIBLE
+            stop_sick_leave_text.setText("Конец больничного: ${dateFormatter.format(Date.valueOf(sickLeave.date_stop))}")
+            stop_sick_leave_text.setTextColor(Color.parseColor("#837E7E"))
         }else sick_leave_delete_image.visibility = View.INVISIBLE
 
         date_picker_sick_leave.setOnClickListener {
@@ -40,15 +45,25 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
                     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
                         SICK_LEAVE_STOP = Date.valueOf("$year-${month + 1}-$dayOfMonth")
                         stop_sick_leave_text.setText("Конец больничного: ${dateFormatter.format(SICK_LEAVE_STOP)}")
+                        stop_sick_leave_text.setTextColor(Color.parseColor("#000000"))
                     }
                 }, year, month, day)
             }
             val calendar2 = Calendar.getInstance()
-            calendar2.set(
-                APP_DATE.toString().split("-")[0].toInt(),
-                APP_DATE.toString().split("-")[1].toInt()-1,
-                APP_DATE.toString().split("-")[2].toInt()
-            )
+            if (boolean){
+                calendar2.set(
+                    sickLeave.date_start.split("-")[0].toInt(),
+                    sickLeave.date_start.split("-")[1].toInt()-1,
+                    sickLeave.date_start.split("-")[2].toInt()
+                )
+            }else{
+                calendar2.set(
+                    APP_DATE.toString().split("-")[0].toInt(),
+                    APP_DATE.toString().split("-")[1].toInt()-1,
+                    APP_DATE.toString().split("-")[2].toInt()
+                )
+            }
+
             datePicker?.datePicker?.minDate = calendar2.timeInMillis
             datePicker?.show()
         }
@@ -63,15 +78,35 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
     override fun change() {
         if (!boolean){
             if (check_date()){
-                val initPost = GlobalScope.launch(Dispatchers.Main) {
-                    val postOperation = async(Dispatchers.IO) {
-                        SickLeaveApi().post(SICK_LEAVE_STOP.toString())
+                if (stop_sick_leave_text.text != "") {
+                    val initPost = GlobalScope.launch(Dispatchers.Main) {
+                        val postOperation = async(Dispatchers.IO) {
+                            SickLeaveApi().post(SICK_LEAVE_STOP.toString())
+                        }
+                        postOperation.await()
+                        fragmentManager?.popBackStack()
                     }
-                    postOperation.await()
-                    fragmentManager?.popBackStack()
+                }else {
+                    showToast("Укажите окончание больничного!")
                 }
             }else{
                 showToast("Этот больничный пересекается с другим, уже записанным, больничным!")
+            }
+        }else if (boolean){
+            if (stop_sick_leave_text.text != "Конец больничного: ${dateFormatter.format(Date.valueOf(sickLeave.date_stop))}"){
+                if (check_date()){
+                    val initPut = GlobalScope.launch(Dispatchers.Main) {
+                        val postOperation = async(Dispatchers.IO) {
+                            SickLeaveApi().put(SickLeave(sickLeave.id, sickLeave.date_start, SICK_LEAVE_STOP.toString()))
+                        }
+                        postOperation.await()
+                        fragmentManager?.popBackStack()
+                    }
+                }else{
+                    showToast("Этот больничный пересекается с другим, уже записанным, больничным!")
+                }
+            }else{
+                showToast("Конец больничного не изменен!")
             }
         }
     }
@@ -83,14 +118,39 @@ class SickLeaveFragment(var boolean: Boolean = false) : BaseChangeCalendarFragme
             TimeUnit.DAYS.convert(
                 it, TimeUnit.MILLISECONDS)
         }
-        if (dif != null) {
-            for (j in 0 .. dif.toInt()){
-                if(LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))){
-                    return false
+
+        if(boolean){
+            val sick_leave_start_put = Date.valueOf(sickLeave.date_start)
+            val sick_leave_stop_put =  Date.valueOf(sickLeave.date_stop)
+            val dif_put = sick_leave_stop_put?.time?.minus(sick_leave_start_put?.time!!)?.let {
+                TimeUnit.DAYS.convert(
+                    it, TimeUnit.MILLISECONDS)
+            }
+            val List_of_sick_leave_put = mutableListOf<Date>()
+            if (dif_put != null) {
+                for (i in 0..dif_put.toInt()){
+                    List_of_sick_leave_put.add(Date(sick_leave_start_put?.time!! + (1000 * 60 * 60 * 24 * i)))
                 }
             }
+            if (dif != null) {
+                for (j in 0..dif.toInt()) {
+                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))
+                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))) {
+                        return false
+                    }
+                }
+            }
+            return true
+        }else {
+            if (dif != null) {
+                for (j in 0..dif.toInt()) {
+                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))) {
+                        return false
+                    }
+                }
+            }
+            return true
         }
-        return true
     }
 
 }

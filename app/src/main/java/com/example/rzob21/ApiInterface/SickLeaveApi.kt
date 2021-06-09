@@ -72,5 +72,36 @@ class SickLeaveApi {
         })
     }
 
+    fun put(sickLeave: SickLeave){
+        //        Это Put
+        val id_sickleave = sickLeave.id
+        val jsonObject = JSONObject("""{"date_start":"${sickLeave.date_start}","date_stop":"${sickLeave.date_stop}","user":{"id":"${USER.id}"}}""")
+        // Convert JSONObject to String
+        val jsonObjectString = jsonObject.toString()
+        Log.d("kek", jsonObjectString)
+        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        val request = Request.Builder().url("$BASE_URL/api/sickleave/$id_sickleave").put(requestBody).build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("kek", e.toString())
+                APP_ACTIVITY.runOnUiThread {
+                    showToast("Ошибка: $e")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.code.toString()
+                Log.d("kek", body)
+                APP_ACTIVITY.runOnUiThread {
+                    showToast("Больничный обновлен!")
+                }
+            }
+
+        })
+    }
 
 }
