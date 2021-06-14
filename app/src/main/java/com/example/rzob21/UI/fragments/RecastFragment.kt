@@ -43,7 +43,6 @@ class RecastFragment(val recast: Recast = Recast(date = APP_DATE.toString(),reca
                     RecastApi().delete(Recast(recast.id, APP_DATE.toString()))
                 }
                 postOperation.await()
-                showToast(getString(R.string.toast_data_update))
                 fragmentManager?.popBackStack()
             }
         }

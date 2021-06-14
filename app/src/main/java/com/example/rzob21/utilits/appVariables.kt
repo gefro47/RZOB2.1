@@ -1,6 +1,6 @@
 package com.example.rzob21.utilits
 
-import com.example.rzob21.models.SickLeave
+import com.example.rzob21.models.PeriodModel
 import com.gefro.springbootkotlinRZOBbackend.models.Income
 import com.gefro.springbootkotlinRZOBbackend.models.Recast
 import java.sql.Date
@@ -40,7 +40,8 @@ var READ_RECAST = false
 var LIST_SICK_LEAVE_OF_TWO_YEAR = mutableListOf<String>()
 var APP_SICK_LEAVE_NUMBER_OF_DAYS = 0
 var APP_CALENDAR_DATE_PLUS_SICK_LEAVE = ""
-var LIST_SICK_LEAVE_OF_MONTH = mutableListOf<SickLeave>()
+var LIST_SICK_LEAVE_OF_MONTH = mutableListOf<PeriodModel>()
+var LIST_SICK_LEAVE_OF_YEAR = mutableListOf<PeriodModel>()
 var LIST_SICK_LEAVE_OF_NEXT_MONTH = mutableListOf<String>()
 var LIST_OF_SICK_LEAVE_DATE_START = mutableListOf<String>()
 var APP_SICK_LEAVE_DAY = 0

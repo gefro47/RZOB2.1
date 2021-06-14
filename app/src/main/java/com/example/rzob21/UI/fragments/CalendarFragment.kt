@@ -114,7 +114,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             val postOperation = async(Dispatchers.IO) {
                 APP_DATE?.let {
                     RecastApi().getAllByYearAndMonth(it)
-                    SickLeaveApi().getAllByYearAndMonth(it)
+                    SickLeaveApi().getAllByYear(it)
                 }
                 Log.d("Kek3", APP_DATE.toString())
             }
@@ -126,14 +126,25 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 //                Log.d("listdateofrecast", LIST_OF_RECAST_DATE.toString())
 //                Log.d("listdateofrecast", APP_DATE.toString())
             }
-            for (i in LIST_SICK_LEAVE_OF_MONTH.indices){
-                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_start)
-                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_stop)
-                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
-                for (j in 0 .. dif.toInt()){
-                    LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))
+            for (i in LIST_SICK_LEAVE_OF_YEAR.indices){
+                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_start)
+                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_stop)
+                if (APP_DATE?.after(sick_leave_start) == true
+                    && APP_DATE?.before(sick_leave_stop) == true){
+                        val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+                        for (j in 0 .. dif.toInt()){
+                            LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
+                        }
                 }
             }
+//            for (i in LIST_SICK_LEAVE_OF_MONTH.indices){
+//                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_start)
+//                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_stop)
+//                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+//                for (j in 0 .. dif.toInt()){
+//                    LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))
+//                }
+//            }
             Log.d("listdateofsickleave", LIST_OF_SICK_LEAVE_DATE.toString())
             initRecyclerViewForCalendarFragment(calendar_recycle_view, requireContext())
             initFields()

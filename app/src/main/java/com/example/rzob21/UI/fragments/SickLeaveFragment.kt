@@ -1,13 +1,12 @@
 package com.example.rzob21.UI.fragments
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.view.View
 import android.widget.DatePicker
 import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
-import com.example.rzob21.models.SickLeave
+import com.example.rzob21.models.PeriodModel
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.fragment_sick_leave.*
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DATE.toString(),date_stop = ""), var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_sick_leave) {
+class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = APP_DATE.toString(),date_stop = ""), var boolean: Boolean = false) : BaseChangeCalendarFragment(R.layout.fragment_sick_leave) {
+
 
     val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG)
 
@@ -69,9 +69,13 @@ class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DA
         }
 
         sick_leave_delete_image.setOnClickListener {
-
-            showToast(getString(R.string.toast_data_update))
-            fragmentManager?.popBackStack()
+            val initDelete = GlobalScope.launch(Dispatchers.Main) {
+                val postOperation = async(Dispatchers.IO) {
+                    sickLeave.id?.let { it1 -> SickLeaveApi().delete(it1) }
+                }
+                postOperation.await()
+                fragmentManager?.popBackStack()
+            }
         }
     }
 
@@ -90,20 +94,20 @@ class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DA
                     showToast("Укажите окончание больничного!")
                 }
             }else{
-                showToast("Этот больничный пересекается с другим, уже записанным, больничным!")
+                showToast("Этот больничный пересекается с другими событиями!")
             }
         }else if (boolean){
             if (stop_sick_leave_text.text != "Конец больничного: ${dateFormatter.format(Date.valueOf(sickLeave.date_stop))}"){
                 if (check_date()){
                     val initPut = GlobalScope.launch(Dispatchers.Main) {
                         val postOperation = async(Dispatchers.IO) {
-                            SickLeaveApi().put(SickLeave(sickLeave.id, sickLeave.date_start, SICK_LEAVE_STOP.toString()))
+                            SickLeaveApi().put(PeriodModel(sickLeave.id, sickLeave.date_start, SICK_LEAVE_STOP.toString()))
                         }
                         postOperation.await()
                         fragmentManager?.popBackStack()
                     }
                 }else{
-                    showToast("Этот больничный пересекается с другим, уже записанным, больничным!")
+                    showToast("Этот больничный пересекается с другими событиями!")
                 }
             }else{
                 showToast("Конец больничного не изменен!")
@@ -129,13 +133,16 @@ class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DA
             val List_of_sick_leave_put = mutableListOf<Date>()
             if (dif_put != null) {
                 for (i in 0..dif_put.toInt()){
-                    List_of_sick_leave_put.add(Date(sick_leave_start_put?.time!! + (1000 * 60 * 60 * 24 * i)))
+                    List_of_sick_leave_put.add(Date(sick_leave_start_put?.time!! + (one_day * i)))
                 }
             }
             if (dif != null) {
                 for (j in 0..dif.toInt()) {
-                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))
-                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))) {
+                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
+                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))) {
+                        return false
+                    }else if(LIST_OF_RECAST_DATE.contains(Date(sick_leave_start.time + (one_day * j)))
+                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))){
                         return false
                     }
                 }
@@ -144,7 +151,8 @@ class SickLeaveFragment(val sickLeave: SickLeave = SickLeave(date_start = APP_DA
         }else {
             if (dif != null) {
                 for (j in 0..dif.toInt()) {
-                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (1000 * 60 * 60 * 24 * j)))) {
+                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
+                        || LIST_OF_RECAST_DATE.contains(Date(sick_leave_start.time + (one_day * j)))) {
                         return false
                     }
                 }

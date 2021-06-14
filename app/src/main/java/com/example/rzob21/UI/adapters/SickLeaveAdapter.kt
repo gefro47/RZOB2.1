@@ -6,23 +6,19 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rzob21.R
-import com.example.rzob21.UI.fragments.RecastFragment
 import com.example.rzob21.UI.fragments.SickLeaveFragment
-import com.example.rzob21.models.SickLeave
+import com.example.rzob21.models.PeriodModel
 import com.example.rzob21.utilits.*
-import com.gefro.springbootkotlinRZOBbackend.models.Recast
-import kotlinx.android.synthetic.main.event_recast_item.view.*
 import kotlinx.android.synthetic.main.event_sick_leave_item.view.*
 import kotlinx.android.synthetic.main.event_sick_leave_item.view.event_info
 import kotlinx.android.synthetic.main.event_sick_leave_item.view.event_name
 import java.sql.Date
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class SickLeaveAdapter : RecyclerView.Adapter<SickLeaveAdapter.MyViewHolder>(){
 
-    private var sickLeaveList = emptyList<SickLeave>()
+    private var sickLeaveList = emptyList<PeriodModel>()
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -47,7 +43,7 @@ class SickLeaveAdapter : RecyclerView.Adapter<SickLeaveAdapter.MyViewHolder>(){
                 calendar1.set(APP_CALENDAR_DATE_YEAR, APP_CALENDAR_DATE_MONTH, APP_CALENDAR_DATE_DAY)
                 APP_CALENDAR_DATE = dateFormatter.format(calendar1.time)
 
-                val sickLeave = SickLeave(LIST_SICK_LEAVE_OF_MONTH[position].id, LIST_SICK_LEAVE_OF_MONTH[position].date_start, LIST_SICK_LEAVE_OF_MONTH[position].date_stop)
+                val sickLeave = PeriodModel(LIST_SICK_LEAVE_OF_MONTH[position].id, LIST_SICK_LEAVE_OF_MONTH[position].date_start, LIST_SICK_LEAVE_OF_MONTH[position].date_stop)
 
                 activity.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
@@ -64,7 +60,7 @@ class SickLeaveAdapter : RecyclerView.Adapter<SickLeaveAdapter.MyViewHolder>(){
         return sickLeaveList.size
     }
 
-    fun setData(sickleave: List<SickLeave>){
+    fun setData(sickleave: List<PeriodModel>){
         this.sickLeaveList = sickleave
         notifyDataSetChanged()
     }

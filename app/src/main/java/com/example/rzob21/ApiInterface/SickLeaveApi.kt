@@ -1,9 +1,8 @@
 package com.example.rzob21.ApiInterface
 
 import android.util.Log
-import com.example.rzob21.models.SickLeave
+import com.example.rzob21.models.PeriodModel
 import com.example.rzob21.utilits.*
-import com.gefro.springbootkotlinRZOBbackend.models.Recast
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,11 +25,39 @@ class SickLeaveApi {
                 try {
                     LIST_SICK_LEAVE_OF_MONTH = mutableListOf()
                     val responseData = response.body?.string()
-                    var json = Gson().fromJson(responseData, Array<SickLeave>::class.java)
+                    var json = Gson().fromJson(responseData, Array<PeriodModel>::class.java)
 //                        if (json.isNotEmpty()){
                     for (i in json.indices){
                         LIST_SICK_LEAVE_OF_MONTH.add(json[i])
                         Log.d("kek2", LIST_SICK_LEAVE_OF_MONTH[i].toString())
+                    }
+//                        }
+                }catch (e: Exception){
+                    Log.d("kek2", e.toString())
+                }
+
+
+            }
+        }
+    }
+
+    fun getAllByYear(date: Date){
+
+        val request = Request.Builder().url("$BASE_URL/api/${UID}/sickleave/year/$date").build()
+
+        val client = OkHttpClient()
+
+        //синхронный вызов
+        client.newCall(request).execute().use { response ->
+            response.use {
+                try {
+                    LIST_SICK_LEAVE_OF_YEAR = mutableListOf()
+                    val responseData = response.body?.string()
+                    var json = Gson().fromJson(responseData, Array<PeriodModel>::class.java)
+//                        if (json.isNotEmpty()){
+                    for (i in json.indices){
+                        LIST_SICK_LEAVE_OF_YEAR.add(json[i])
+                        Log.d("kek2", LIST_SICK_LEAVE_OF_YEAR[i].toString())
                     }
 //                        }
                 }catch (e: Exception){
@@ -72,7 +99,7 @@ class SickLeaveApi {
         })
     }
 
-    fun put(sickLeave: SickLeave){
+    fun put(sickLeave: PeriodModel){
         //        Это Put
         val id_sickleave = sickLeave.id
         val jsonObject = JSONObject("""{"date_start":"${sickLeave.date_start}","date_stop":"${sickLeave.date_stop}","user":{"id":"${USER.id}"}}""")
@@ -98,6 +125,31 @@ class SickLeaveApi {
                 Log.d("kek", body)
                 APP_ACTIVITY.runOnUiThread {
                     showToast("Больничный обновлен!")
+                }
+            }
+
+        })
+    }
+
+    fun delete(sickLeaveId: Int){
+        //Это Delete
+
+        val request = Request.Builder().url("$BASE_URL/api/sickleave/${sickLeaveId}").delete().build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("kek", e.toString())
+                APP_ACTIVITY.runOnUiThread {
+                    showToast("Ошибка: $e")
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.code.toString()
+                Log.d("kek", body)
+                APP_ACTIVITY.runOnUiThread {
+                    showToast("Больничный удален!")
                 }
             }
 

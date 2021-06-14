@@ -17,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.rzob21.ApiInterface.IncomeApi
 import com.example.rzob21.R
-import com.example.rzob21.UI.fragments.HistoryOfIncomeFragment
+import com.example.rzob21.models.PeriodModel
 import kotlinx.android.synthetic.main.add_income_dialog.view.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 fun showToast(message: String){
