@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.view.View
 import android.widget.DatePicker
+import com.example.rzob21.ApiInterface.RecastApi
 import com.example.rzob21.ApiInterface.SickLeaveApi
 import com.example.rzob21.R
 import com.example.rzob21.models.PeriodModel
@@ -28,6 +29,7 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
         super.onResume()
         sick_leave_data.text = APP_CALENDAR_DATE
         start_sick_leave_text.setText("Начало больничного: $APP_CALENDAR_DATE")
+        APP_DATE?.let { RecastApi().getAllByYear(it) }
         if (boolean){
             sick_leave_delete_image.visibility = View.VISIBLE
             stop_sick_leave_text.setText("Конец больничного: ${dateFormatter.format(Date.valueOf(sickLeave.date_stop))}")
@@ -141,7 +143,7 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
                     if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
                         && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))) {
                         return false
-                    }else if(LIST_OF_RECAST_DATE.contains(Date(sick_leave_start.time + (one_day * j)))
+                    }else if(LIST_RECAST_OF_YEAR.contains(Date(sick_leave_start.time + (one_day * j)))
                         && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))){
                         return false
                     }
@@ -152,7 +154,7 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
             if (dif != null) {
                 for (j in 0..dif.toInt()) {
                     if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
-                        || LIST_OF_RECAST_DATE.contains(Date(sick_leave_start.time + (one_day * j)))) {
+                        || LIST_RECAST_OF_YEAR.contains(Date(sick_leave_start.time + (one_day * j)))) {
                         return false
                     }
                 }

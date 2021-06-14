@@ -46,52 +46,52 @@ class RecastApi(){
 
         val client = OkHttpClient()
         //асинхронный вызов
-//        client.newCall(request).enqueue(object: Callback{
-//            override fun onFailure(call: Call, e: IOException) {
-//                Log.d("kek", e.toString())
-//            }
-//
-//            override fun onResponse(call: Call, response: Response) {
-//                response.use {
-//                    try {
-//                        LIST_RECAST_OF_YEAR = mutableListOf()
-//                        val responseData = response.body?.string()
-//                        var json = Gson().fromJson(responseData, Array<Recast>::class.java)
-////                        if (json.isNotEmpty()){
-//                            for (i in json.indices){
-//                                LIST_RECAST_OF_YEAR.add(json[i])
-////                                Log.d("kek", list[i].toString())
-//                            }
-////                        }
-//                    }catch (e: Exception){
-//                        Log.d("kek2", e.toString())
-//                    }
-//
-//
-//                }
-//
-//            }
-//        })
-        //синхронный вызов
-        client.newCall(request).execute().use { response ->
-            response.use {
-                try {
-                    LIST_RECAST_OF_YEAR = mutableListOf()
-                    val responseData = response.body?.string()
-                    var json = Gson().fromJson(responseData, Array<Recast>::class.java)
+        client.newCall(request).enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("kek", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    try {
+                        LIST_RECAST_OF_YEAR = mutableListOf()
+                        val responseData = response.body?.string()
+                        var json = Gson().fromJson(responseData, Array<Recast>::class.java)
 //                        if (json.isNotEmpty()){
-                        for (i in json.indices){
-                            LIST_RECAST_OF_YEAR.add(json[i])
-                                Log.d("kek2", LIST_RECAST_OF_YEAR[i].toString())
-                        }
+                            for (i in json.indices){
+                                LIST_RECAST_OF_YEAR.add(Date.valueOf(json[i].date))
+                            }
+                        Log.d("kek20", LIST_RECAST_OF_YEAR.toString())
 //                        }
-                }catch (e: Exception){
-                    Log.d("kek2", e.toString())
+                    }catch (e: Exception){
+                        Log.d("kek20", e.toString())
+                    }
+
+
                 }
 
-
             }
-        }
+        })
+        //синхронный вызов
+//        client.newCall(request).execute().use { response ->
+//            response.use {
+//                try {
+//                    LIST_RECAST_OF_YEAR = mutableListOf()
+//                    val responseData = response.body?.string()
+//                    var json = Gson().fromJson(responseData, Array<Recast>::class.java)
+////                        if (json.isNotEmpty()){
+//                        for (i in json.indices){
+//                            LIST_RECAST_OF_YEAR.add(json[i])
+//                                Log.d("kek2", LIST_RECAST_OF_YEAR[i].toString())
+//                        }
+////                        }
+//                }catch (e: Exception){
+//                    Log.d("kek2", e.toString())
+//                }
+//
+//
+//            }
+//        }
     }
 
     fun getAllByYearAndMonth(date: Date){

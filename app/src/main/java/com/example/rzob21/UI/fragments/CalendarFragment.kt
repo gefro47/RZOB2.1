@@ -121,6 +121,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             postOperation.await()
             LIST_OF_RECAST_DATE = mutableListOf()
             LIST_OF_SICK_LEAVE_DATE = mutableListOf()
+            LIST_SICK_LEAVE_OF_MONTH = mutableListOf()
             for (i in LIST_RECAST_OF_MONTH.indices) {
                 LIST_OF_RECAST_DATE.add(Date.valueOf(LIST_RECAST_OF_MONTH[i].date))
 //                Log.d("listdateofrecast", LIST_OF_RECAST_DATE.toString())
@@ -129,13 +130,21 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             for (i in LIST_SICK_LEAVE_OF_YEAR.indices){
                 val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_start)
                 val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_stop)
-                if (APP_DATE?.after(sick_leave_start) == true
-                    && APP_DATE?.before(sick_leave_stop) == true){
-                        val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
-                        for (j in 0 .. dif.toInt()){
-                            LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
-                        }
+                if (APP_CALENDAR_DATE_MONTH+1 >= LIST_SICK_LEAVE_OF_YEAR[i].date_start.split("-")[1].toInt()
+                    && APP_CALENDAR_DATE_MONTH+1 <= LIST_SICK_LEAVE_OF_YEAR[i].date_stop.split("-")[1].toInt()){
+                        LIST_SICK_LEAVE_OF_MONTH.add(LIST_SICK_LEAVE_OF_YEAR[i])
+                    val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+                    for (j in 0 .. dif.toInt()){
+                        LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
+                    }
                 }
+//                if (APP_DATE?.after(sick_leave_start) == true
+//                    && APP_DATE?.before(sick_leave_stop) == true){
+//                        val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+//                        for (j in 0 .. dif.toInt()){
+//                            LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
+//                        }
+//                }
             }
 //            for (i in LIST_SICK_LEAVE_OF_MONTH.indices){
 //                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_start)
