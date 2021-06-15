@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.rzob21.ApiInterface.RecastApi
 import com.example.rzob21.ApiInterface.SickLeaveApi
+import com.example.rzob21.ApiInterface.VacationApi
 import com.example.rzob21.R
 import com.example.rzob21.utilits.*
 import kotlinx.android.synthetic.main.change_event_list.view.*
@@ -48,7 +49,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
         container_for_add.setOnClickListener {
             if (LIST_OF_RECAST_DATE.contains(APP_DATE)){
                 showToast("В этот день уже добалена переработка!")
-            }else if(LIST_VACATION_OF_MONTH.contains(APP_DATE)){
+            }else if(LIST_OF_VACATION_DATE.contains(APP_DATE)){
                 showToast("В этот день уже добавлен отпуск!")
             }else if(LIST_OF_SICK_LEAVE_DATE.contains(APP_DATE)){
                 showToast("В этот день уже добавлен больничный!")
@@ -65,10 +66,10 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                     replaceFragment(RecastFragment())
                     mBuilder.cancel()
                 }
-//                mDialogView.container_for_holiday.setOnClickListener {
-//                    replaceFragment(VacationFragment(APP_DATE))
-//                    mBuilder.cancel()
-//                }
+                mDialogView.container_for_holiday.setOnClickListener {
+                    replaceFragment(VacationFragment())
+                    mBuilder.cancel()
+                }
                 mDialogView.container_for_sick_days.setOnClickListener {
                     replaceFragment(SickLeaveFragment())
                     mBuilder.cancel()
@@ -115,6 +116,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
                 APP_DATE?.let {
                     RecastApi().getAllByYearAndMonth(it)
                     SickLeaveApi().getAllByYear(it)
+                    VacationApi().getAllByYear(it)
                 }
                 Log.d("Kek3", APP_DATE.toString())
             }
@@ -122,39 +124,39 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
             LIST_OF_RECAST_DATE = mutableListOf()
             LIST_OF_SICK_LEAVE_DATE = mutableListOf()
             LIST_SICK_LEAVE_OF_MONTH = mutableListOf()
+            LIST_OF_VACATION_DATE = mutableListOf()
+            LIST_VACATION_OF_MONTH = mutableListOf()
             for (i in LIST_RECAST_OF_MONTH.indices) {
                 LIST_OF_RECAST_DATE.add(Date.valueOf(LIST_RECAST_OF_MONTH[i].date))
 //                Log.d("listdateofrecast", LIST_OF_RECAST_DATE.toString())
 //                Log.d("listdateofrecast", APP_DATE.toString())
             }
-            for (i in LIST_SICK_LEAVE_OF_YEAR.indices){
-                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_start)
-                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[i].date_stop)
-                if (APP_CALENDAR_DATE_MONTH+1 >= LIST_SICK_LEAVE_OF_YEAR[i].date_start.split("-")[1].toInt()
-                    && APP_CALENDAR_DATE_MONTH+1 <= LIST_SICK_LEAVE_OF_YEAR[i].date_stop.split("-")[1].toInt()){
-                        LIST_SICK_LEAVE_OF_MONTH.add(LIST_SICK_LEAVE_OF_YEAR[i])
-                    val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
-                    for (j in 0 .. dif.toInt()){
-                        LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
-                    }
+            for (o in LIST_SICK_LEAVE_OF_YEAR.indices){
+                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[o].date_start)
+                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_YEAR[o].date_stop)
+                if (APP_CALENDAR_DATE_MONTH+1 >= LIST_SICK_LEAVE_OF_YEAR[o].date_start.split("-")[1].toInt()
+                    && APP_CALENDAR_DATE_MONTH+1 <= LIST_SICK_LEAVE_OF_YEAR[o].date_stop.split("-")[1].toInt()){
+                        LIST_SICK_LEAVE_OF_MONTH.add(LIST_SICK_LEAVE_OF_YEAR[o])
                 }
-//                if (APP_DATE?.after(sick_leave_start) == true
-//                    && APP_DATE?.before(sick_leave_stop) == true){
-//                        val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
-//                        for (j in 0 .. dif.toInt()){
-//                            LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
-//                        }
-//                }
+                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+                for (j in 0 .. dif.toInt()){
+                    LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (one_day * j)))
+                }
             }
-//            for (i in LIST_SICK_LEAVE_OF_MONTH.indices){
-//                val sick_leave_start = Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_start)
-//                val sick_leave_stop =  Date.valueOf(LIST_SICK_LEAVE_OF_MONTH[i].date_stop)
-//                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
-//                for (j in 0 .. dif.toInt()){
-//                    LIST_OF_SICK_LEAVE_DATE.add(Date(sick_leave_start.time + (1000 * 60 * 60 * 24 * j)))
-//                }
-//            }
-            Log.d("listdateofsickleave", LIST_OF_SICK_LEAVE_DATE.toString())
+
+            for (o in LIST_VACATION_OF_YEAR.indices){
+                val sick_leave_start = Date.valueOf(LIST_VACATION_OF_YEAR[o].date_start)
+                val sick_leave_stop =  Date.valueOf(LIST_VACATION_OF_YEAR[o].date_stop)
+                if (APP_CALENDAR_DATE_MONTH+1 >= LIST_VACATION_OF_YEAR[o].date_start.split("-")[1].toInt()
+                    && APP_CALENDAR_DATE_MONTH+1 <= LIST_VACATION_OF_YEAR[o].date_stop.split("-")[1].toInt()){
+                    LIST_VACATION_OF_MONTH.add(LIST_VACATION_OF_YEAR[o])
+                }
+                val dif = TimeUnit.DAYS.convert(sick_leave_stop.time - sick_leave_start.time, TimeUnit.MILLISECONDS)
+                for (j in 0 .. dif.toInt()){
+                    LIST_OF_VACATION_DATE.add(Date(sick_leave_start.time + (one_day * j)))
+                }
+            }
+//            Log.d("listdateofsickleave", LIST_OF_SICK_LEAVE_DATE.toString())
             initRecyclerViewForCalendarFragment(calendar_recycle_view, requireContext())
             initFields()
         }

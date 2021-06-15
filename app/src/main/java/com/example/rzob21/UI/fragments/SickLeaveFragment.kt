@@ -83,7 +83,7 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
 
     override fun change() {
         if (!boolean){
-            if (check_date()){
+            if (check_date(boolean, sickLeave)){
                 if (stop_sick_leave_text.text != "") {
                     val initPost = GlobalScope.launch(Dispatchers.Main) {
                         val postOperation = async(Dispatchers.IO) {
@@ -100,7 +100,7 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
             }
         }else if (boolean){
             if (stop_sick_leave_text.text != "Конец больничного: ${dateFormatter.format(Date.valueOf(sickLeave.date_stop))}"){
-                if (check_date()){
+                if (check_date(boolean, sickLeave)){
                     val initPut = GlobalScope.launch(Dispatchers.Main) {
                         val postOperation = async(Dispatchers.IO) {
                             SickLeaveApi().put(PeriodModel(sickLeave.id, sickLeave.date_start, SICK_LEAVE_STOP.toString()))
@@ -116,51 +116,4 @@ class SickLeaveFragment(val sickLeave: PeriodModel = PeriodModel(date_start = AP
             }
         }
     }
-
-    fun check_date(): Boolean{
-        val sick_leave_start = APP_DATE
-        val sick_leave_stop =  SICK_LEAVE_STOP
-        val dif = sick_leave_stop?.time?.minus(sick_leave_start?.time!!)?.let {
-            TimeUnit.DAYS.convert(
-                it, TimeUnit.MILLISECONDS)
-        }
-
-        if(boolean){
-            val sick_leave_start_put = Date.valueOf(sickLeave.date_start)
-            val sick_leave_stop_put =  Date.valueOf(sickLeave.date_stop)
-            val dif_put = sick_leave_stop_put?.time?.minus(sick_leave_start_put?.time!!)?.let {
-                TimeUnit.DAYS.convert(
-                    it, TimeUnit.MILLISECONDS)
-            }
-            val List_of_sick_leave_put = mutableListOf<Date>()
-            if (dif_put != null) {
-                for (i in 0..dif_put.toInt()){
-                    List_of_sick_leave_put.add(Date(sick_leave_start_put?.time!! + (one_day * i)))
-                }
-            }
-            if (dif != null) {
-                for (j in 0..dif.toInt()) {
-                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
-                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))) {
-                        return false
-                    }else if(LIST_RECAST_OF_YEAR.contains(Date(sick_leave_start.time + (one_day * j)))
-                        && !List_of_sick_leave_put.contains(Date(sick_leave_start.time + (one_day * j)))){
-                        return false
-                    }
-                }
-            }
-            return true
-        }else {
-            if (dif != null) {
-                for (j in 0..dif.toInt()) {
-                    if (LIST_OF_SICK_LEAVE_DATE.contains(Date(sick_leave_start?.time!! + (one_day * j)))
-                        || LIST_RECAST_OF_YEAR.contains(Date(sick_leave_start.time + (one_day * j)))) {
-                        return false
-                    }
-                }
-            }
-            return true
-        }
-    }
-
 }
