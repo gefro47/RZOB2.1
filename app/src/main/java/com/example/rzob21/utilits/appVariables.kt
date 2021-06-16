@@ -19,6 +19,7 @@ var SICK_LEAVE_STOP: Date ?= null
 var VACATION_STOP: Date ?= null
 var APP_INCOME_DATE: Date ?= null
 var APP_INCOME_OF_HISTORY_DATE: Date ?= null
+var APP_HISTORY_OF_VACATION_DATE: Date ?= null
 var INCOME: Income ?= null
 var APP_DATE_PICK_MONTH_L = ""
 var INCOME_HISTORY_DATE_PICK_MONTH_AND_YEAR = ""

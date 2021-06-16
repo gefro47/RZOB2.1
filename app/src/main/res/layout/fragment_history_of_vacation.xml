@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.fragments.HistoryOfIncomeFragment"
-    android:id="@+id/layout_history_of_income">
+    tools:context=".UI.fragments.HistoryOfVacationFragment"
+    android:id="@+id/layout_history_of_vacation">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/settings_header_block"
@@ -22,7 +22,7 @@
             android:layout_width="@dimen/settings_icon_width"
             android:layout_height="@dimen/settings_icon_height"
             android:layout_marginStart="@dimen/horizontal_margin"
-            android:src="@drawable/ic_history"
+            android:src="@drawable/ic_menu_otpusc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/horizontal_margin"
             android:layout_marginTop="@dimen/vertical_margin"
-            android:text="Доходы"
+            android:text="Отпуска"
             android:textColor="@color/black"
             android:textSize="@dimen/very_large_text_size"
             android:textStyle="bold"
@@ -42,7 +42,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/history_recycler_view"
+        android:id="@+id/history_of_vacation_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
@@ -60,7 +60,7 @@
         android:layout_marginBottom="0dp">
 
         <DatePicker
-            android:id="@+id/date_picker_month_of_history"
+            android:id="@+id/date_picker_history_of_vacation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:calendarViewShown="false"

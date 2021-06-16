@@ -5,10 +5,7 @@ import android.util.Log
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rzob21.UI.adapters.HistoryOfIncomeAdapter
-import com.example.rzob21.UI.adapters.RecastAdapter
-import com.example.rzob21.UI.adapters.SickLeaveAdapter
-import com.example.rzob21.UI.adapters.VacationAdapter
+import com.example.rzob21.UI.adapters.*
 
 fun initRecyclerViewForCalendarFragment(calendar_recycle_view: RecyclerView, requireContext: Context) {
     val adapter1 = SickLeaveAdapter()
@@ -40,6 +37,20 @@ fun initRecyclerViewForHistoryOfIncomeFragment(income_recycle_view: RecyclerView
 
     val adapter = ConcatAdapter(adapter1)
     val recyclerView = income_recycle_view
+    recyclerView.adapter = adapter
+    recyclerView.layoutManager = LinearLayoutManager(requireContext)
+}
+
+fun initRecyclerViewForHistoryOfVacationFragment(vacation_recycle_view: RecyclerView, requireContext: Context) {
+    val adapter1 = VacationAdapterForHistory()
+
+    val vacation = LIST_VACATION_OF_YEAR
+    Log.d("vacation", vacation.toString())
+    adapter1.setData(vacation)
+
+
+    val adapter = ConcatAdapter(adapter1)
+    val recyclerView = vacation_recycle_view
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(requireContext)
 }

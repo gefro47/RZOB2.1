@@ -90,7 +90,7 @@ fun calendarikToday():String {
     APP_CALENDAR_DATE_YEAR = Date[0].toInt()
     APP_CALENDAR_DATE_YEAR_CHECK = Date[0].toInt()
     APP_CALENDAR_DATE_MONTH = Date[1].toInt() - 1
-    APP_CALENDAR_DATE_MONTH_CHECK = Date[1].toInt()
+    APP_CALENDAR_DATE_MONTH_CHECK = Date[1].toInt()-1
     APP_CALENDAR_DATE_DAY = Date[2].toInt()
     APP_CALENDAR_DATE = APP_DATE_TODAY
     APP_INCOME_DATE_NEXT = java.sql.Date.valueOf("$APP_CALENDAR_DATE_YEAR-${APP_CALENDAR_DATE_MONTH + 2}-1")
