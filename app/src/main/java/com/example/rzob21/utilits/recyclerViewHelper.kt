@@ -54,3 +54,17 @@ fun initRecyclerViewForHistoryOfVacationFragment(vacation_recycle_view: Recycler
     recyclerView.adapter = adapter
     recyclerView.layoutManager = LinearLayoutManager(requireContext)
 }
+
+fun initRecyclerViewForHistoryOfSickLeaveFragment(sick_leave_recycle_view: RecyclerView, requireContext: Context) {
+    val adapter1 = SickLeaveAdapterForHistory()
+
+    val sickLeave = LIST_SICK_LEAVE_OF_YEAR
+    Log.d("sickLeave", sickLeave.toString())
+    adapter1.setData(sickLeave)
+
+
+    val adapter = ConcatAdapter(adapter1)
+    val recyclerView = sick_leave_recycle_view
+    recyclerView.adapter = adapter
+    recyclerView.layoutManager = LinearLayoutManager(requireContext)
+}

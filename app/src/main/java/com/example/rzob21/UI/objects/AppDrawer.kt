@@ -4,10 +4,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.rzob21.R
-import com.example.rzob21.UI.fragments.HistoryOfIncomeFragment
-import com.example.rzob21.UI.fragments.HistoryOfVacationFragment
-import com.example.rzob21.UI.fragments.MonthInfoFragment
-import com.example.rzob21.UI.fragments.SettingsFragment
+import com.example.rzob21.UI.fragments.*
 import com.example.rzob21.utilits.APP_ACTIVITY
 import com.example.rzob21.utilits.replaceFragment
 import com.example.rzob21.utilits.showToast
@@ -97,6 +94,7 @@ class AppDrawer (val mainActivity: AppCompatActivity,private val toolbar: androi
                         0 -> mainActivity.replaceFragment(MonthInfoFragment())
                         1 -> APP_ACTIVITY.replaceFragment(HistoryOfIncomeFragment())
                         2 -> APP_ACTIVITY.replaceFragment(HistoryOfVacationFragment())
+                        3 -> APP_ACTIVITY.replaceFragment(HistoryOfSickLeaveFragment())
                         5 -> mainActivity.replaceFragment(SettingsFragment())
                     }
 //                    showToast(position.toString())
