@@ -1,5 +1,6 @@
 package com.example.rzob21.UI.fragments
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.res.Resources
 import android.view.View
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 import java.sql.Date
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -21,6 +23,7 @@ import javax.xml.datatype.DatatypeConstants.MONTHS
 
 
 class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
+
 
     override fun onStart() {
         super.onStart()
@@ -31,6 +34,7 @@ class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         calendar_spinner()
@@ -38,11 +42,29 @@ class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
         calculate.setOnClickListener {
             if(APP_INCOME_DATE != null){
                 val initIncome = GlobalScope.launch(Dispatchers.Main) {
+                    val formate1 = SimpleDateFormat("MMMM")
                     val getOperation = async(Dispatchers.IO) {
                         APP_INCOME_DATE?.let {IncomeApi().getIncome(it) }
                     }
                     getOperation.await()
-                    incomeView.setText("${INCOME?.income_of_money}")
+                    var avans = ""
+                    var zp = ""
+                    val polzp = USER.salary?.toBigDecimal()?.div(BigDecimal(2))?.times(BigDecimal(0.87))
+                    val income = INCOME?.income_of_money?.toBigDecimal()
+                    val polincome = INCOME?.income_of_money?.toBigDecimal()?.div(BigDecimal(2))
+                    if (polzp != null) {
+                        if(polzp < polincome){
+                            avans = String.format("%.2f", polzp.toDouble())
+                            zp = "${String.format("%.2f", income?.minus(polzp)?.toDouble())}"
+                        }else{
+                            avans = String.format("%.2f", polincome?.toDouble())
+                            zp = String.format("%.2f", polincome?.toDouble())
+                        }
+                    }
+                    itog.setText("Итоговая сумма (-НДС):   ${String.format("%.2f", INCOME?.income_of_money)}₽ \n\nАванс 20 ${formate1.format(APP_INCOME_DATE)}:   $avans₽ \n\nЗарплата 5 ${formate1.format(APP_INCOME_DATE_NEXT)}:   $zp₽"
+//                            "Аванс 20 ${formate1.format(APP_INCOME_DATE)}: $avans\n" +
+//                            "Зарплата 5 ${formate1.format(APP_INCOME_DATE_NEXT)}: $zp"
+                    )
                 }
             }
         }
@@ -58,6 +80,8 @@ class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
 //            val month = month + 1
             val date = Date.valueOf("$year-${month+1}-1")
             APP_INCOME_DATE = date
+            APP_INCOME_DATE_NEXT = Date.valueOf("$year-${month+2}-1")
+
 //            showToast(date.toString())
 //            val msg = "You Selected: $month/$year"
 //            showToast(msg)

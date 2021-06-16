@@ -37,6 +37,8 @@ var LIST_OF_PREHOLIDAYS = mutableListOf<String>()
 var LIST_OF_NOTWORK2020 = mutableListOf<String>()
 var READ_RECAST = false
 
+lateinit var APP_INCOME_DATE_NEXT: Date
+
 
 var LIST_SICK_LEAVE_OF_TWO_YEAR = mutableListOf<String>()
 var APP_SICK_LEAVE_NUMBER_OF_DAYS = 0

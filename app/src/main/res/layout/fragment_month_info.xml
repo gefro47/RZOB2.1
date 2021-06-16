@@ -77,27 +77,16 @@
         app:layout_constraintTop_toBottomOf="@+id/calculate" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/itog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/vertical_margin"
         android:layout_marginHorizontal="@dimen/horizontal_margin"
         android:textColor="@color/black"
         android:textSize="@dimen/normalText"
-        android:text="Итоговая сумма:"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_header_block" />
-
-    <TextView
-        android:id="@+id/incomeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/horizontal_margin"
-        android:textColor="@color/black"
-        android:textSize="@dimen/normalText"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

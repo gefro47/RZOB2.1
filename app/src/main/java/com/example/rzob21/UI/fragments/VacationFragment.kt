@@ -107,7 +107,7 @@ class VacationFragment(val vacation: PeriodModel = PeriodModel(date_start = APP_
                 if (check_date(boolean, vacation)){
                     val initPut = GlobalScope.launch(Dispatchers.Main) {
                         val postOperation = async(Dispatchers.IO) {
-                            VacationApi().put(PeriodModel(vacation.id, vacation.date_start, SICK_LEAVE_STOP.toString()))
+                            VacationApi().put(PeriodModel(vacation.id, vacation.date_start, VACATION_STOP.toString()))
                         }
                         postOperation.await()
                         fragmentManager?.popBackStack()
