@@ -53,7 +53,7 @@ class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
                     val income = INCOME?.income_of_money?.toBigDecimal()
                     val polincome = INCOME?.income_of_money?.toBigDecimal()?.div(BigDecimal(2))
                     if (polzp != null) {
-                        if(polzp < polincome){
+                        if(polzp <= polincome){
                             avans = String.format("%.2f", polzp.toDouble())
                             zp = "${String.format("%.2f", income?.minus(polzp)?.toDouble())}"
                         }else{
