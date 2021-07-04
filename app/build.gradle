@@ -7,6 +7,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        kek {
+            storeFile file('C:\\Users\\gefro\\Desktop\\testkey.jks')
+            storePassword '79458Reva'
+            keyAlias 'key0'
+            keyPassword '79458Reva'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
     buildFeatures {
@@ -29,8 +37,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.kek
+            debuggable true
         }
     }
     compileOptions {

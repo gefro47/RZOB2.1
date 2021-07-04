@@ -42,28 +42,30 @@ class MonthInfoFragment : BaseFragment(R.layout.fragment_month_info) {
         calculate.setOnClickListener {
             if(APP_INCOME_DATE != null){
                 val initIncome = GlobalScope.launch(Dispatchers.Main) {
-                    val formate1 = SimpleDateFormat("MMMM")
                     val getOperation = async(Dispatchers.IO) {
                         APP_INCOME_DATE?.let {IncomeApi().getIncome(it) }
                     }
                     getOperation.await()
-                    var avans = ""
-                    var zp = ""
-                    val polzp = USER.salary?.toBigDecimal()?.div(BigDecimal(2))?.times(BigDecimal(0.87))
-                    val income = INCOME?.income_of_money?.toBigDecimal()
-                    val polincome = INCOME?.income_of_money?.toBigDecimal()?.div(BigDecimal(2))
-                    if (polzp != null) {
-                        if(polzp <= polincome){
-                            avans = String.format("%.2f", polzp.toDouble())
-                            zp = "${String.format("%.2f", income?.minus(polzp)?.toDouble())}"
-                        }else{
-                            avans = String.format("%.2f", polincome?.toDouble())
-                            zp = String.format("%.2f", polincome?.toDouble())
-                        }
-                    }
-                    itog.setText("Итоговая сумма (-НДС):   ${String.format("%.2f", INCOME?.income_of_money)}₽ \n\nАванс 20 ${formate1.format(APP_INCOME_DATE)}:   $avans₽ \n\nЗарплата 5 ${formate1.format(APP_INCOME_DATE_NEXT)}:   $zp₽"
-//                            "Аванс 20 ${formate1.format(APP_INCOME_DATE)}: $avans\n" +
-//                            "Зарплата 5 ${formate1.format(APP_INCOME_DATE_NEXT)}: $zp"
+                    val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG)
+                    itog.setText(
+                        "Итоговая сумма (-НДС):   ${
+                            String.format(
+                                "%.2f",
+                                INCOME?.income_of_money
+                            )
+                        }₽ \n\n" +
+                                "Аванс ${dateFormatter.format(Date.valueOf("${INCOME?.date_of_avans}")!!.time)} :   ${
+                                    String.format(
+                                        "%.2f",
+                                        INCOME?.avans
+                                    )
+                                }₽ \n\n" +
+                                "Зарплата ${dateFormatter.format(Date.valueOf("${INCOME?.date_of_income_without_avans}")!!.time)} :   ${
+                                    String.format(
+                                        "%.2f",
+                                        INCOME?.income_without_avans
+                                    )
+                                }₽"
                     )
                 }
             }

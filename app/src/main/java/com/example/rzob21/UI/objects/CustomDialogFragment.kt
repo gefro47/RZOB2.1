@@ -18,33 +18,33 @@ import kotlinx.android.synthetic.main.fragment_history_of_income.*
 
 
 class CustomDialogFragment: DialogFragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        var rooView = inflater.inflate(R.layout.add_income_dialog, container, false)
-        return rooView
-    }
-
-    override fun onResume() {
-        super.onResume()
-        text_for_date.setText(INCOME_HISTORY_DATE_PICK_MONTH_AND_YEAR)
-        input_income_dialog.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                IncomeApi().post(
-                    input_income_dialog.text.toString().toDouble(),
-                    APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[1].toInt(),
-                    APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[0].toInt(),
-                    false
-                )
-                val imm =
-                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                imm!!.hideSoftInputFromWindow(view?.windowToken, 0)
-                dismiss()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        var rooView = inflater.inflate(R.layout.add_income_dialog, container, false)
+//        return rooView
+//    }
+//
+//    override fun onResume() {
+//        super.onResume()
+//        text_for_date.setText(INCOME_HISTORY_DATE_PICK_MONTH_AND_YEAR)
+//        input_income_dialog.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+//            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+//                IncomeApi().post(
+//                    input_income_dialog.text.toString().toDouble(),
+//                    APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[1].toInt(),
+//                    APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[0].toInt(),
+//                    false
+//                )
+//                val imm =
+//                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+//                imm!!.hideSoftInputFromWindow(view?.windowToken, 0)
+//                dismiss()
+//                return@OnKeyListener true
+//            }
+//            false
+//        })
+//    }
 }

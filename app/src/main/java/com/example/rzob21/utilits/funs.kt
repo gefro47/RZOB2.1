@@ -100,47 +100,47 @@ fun calendarikToday():String {
 
 
 
-fun customAlertDialog(){
-    val mDialogView = LayoutInflater.from(APP_ACTIVITY).inflate(
-        R.layout.add_income_dialog,
-        null
-    )
-    mDialogView.text_for_date.setText(INCOME_HISTORY_DATE_PICK_MONTH_AND_YEAR)
-    val mBuilder = AlertDialog.Builder(APP_ACTIVITY)
-        .setView(mDialogView)
-        .show()
-    mBuilder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    mDialogView.input_income_dialog.requestFocus()
-    mDialogView.input_income_dialog.setSelection(mDialogView.input_income_dialog.getText().length)
-    showKeyboard()
-    mDialogView.input_income_dialog.onFocusChangeListener = View.OnFocusChangeListener { p0, p1 ->
-        if (!p1){
-            // hide soft keyboard when edit text lost focus
-            hideKeyboard()
-        }
-    }
-    mDialogView.input_income_dialog.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-        if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-            IncomeApi().post(
-                mDialogView.input_income_dialog.text.toString().toDouble(),
-                APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[1].toInt(),
-                APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[0].toInt(),
-                false
-            )
-            val imm = APP_ACTIVITY.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(mDialogView.windowToken, 0)
-            mBuilder.cancel()
-            return@OnKeyListener true
-        }
-        false
-    })
+//fun customAlertDialog(){
+//    val mDialogView = LayoutInflater.from(APP_ACTIVITY).inflate(
+//        R.layout.add_income_dialog,
+//        null
+//    )
+//    mDialogView.text_for_date.setText(INCOME_HISTORY_DATE_PICK_MONTH_AND_YEAR)
+//    val mBuilder = AlertDialog.Builder(APP_ACTIVITY)
+//        .setView(mDialogView)
+//        .show()
+//    mBuilder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//    mDialogView.input_income_dialog.requestFocus()
+//    mDialogView.input_income_dialog.setSelection(mDialogView.input_income_dialog.getText().length)
+//    showKeyboard()
+//    mDialogView.input_income_dialog.onFocusChangeListener = View.OnFocusChangeListener { p0, p1 ->
+//        if (!p1){
+//            // hide soft keyboard when edit text lost focus
+//            hideKeyboard()
+//        }
+//    }
+//    mDialogView.input_income_dialog.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+//        if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+//            IncomeApi().post(
+//                mDialogView.input_income_dialog.text.toString().toDouble(),
+//                APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[1].toInt(),
+//                APP_INCOME_OF_HISTORY_DATE?.toString()!!.split("-")[0].toInt(),
+//                false
+//            )
+//            val imm = APP_ACTIVITY.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.hideSoftInputFromWindow(mDialogView.windowToken, 0)
+//            mBuilder.cancel()
+//            return@OnKeyListener true
+//        }
+//        false
+//    })
 
 //    val dialogBuilder = AlertDialog.Builder(this)
 //    dialogBuilder.setView(R.layout.temp)
 //    val alertDialog = dialogBuilder.create()
 //    alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 //    alertDialog.show()
-}
+//}
 
 fun check_date(boolean: Boolean, sickLeave: PeriodModel): Boolean{
     val sick_leave_start = APP_DATE

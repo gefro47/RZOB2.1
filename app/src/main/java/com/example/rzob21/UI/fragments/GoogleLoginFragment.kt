@@ -63,6 +63,7 @@ class GoogleLoginFragment : Fragment(R.layout.fragment_google_login) {
                 }
             } catch (e: ApiException) {
                 showToast("Google sign in failed:(")
+                showToast("$e")
             }
         }
     }
